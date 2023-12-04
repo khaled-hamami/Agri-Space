@@ -1,0 +1,11 @@
+full routing protection
+easy and friendly  ux ui
+eye puling light dark mode system
+fully responsive design 
+inch precise mesarment  details and beutiful themed (nature) design
+full authentification and autherization system
+blazing fast responsivness using vite  and preact signals
+beatifull animation using framer motion
+secure fast and extensive system provided by Django
+CRUD api using Django 
+Ai integration using pretrained model

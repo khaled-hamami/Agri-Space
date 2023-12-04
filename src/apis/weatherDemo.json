@@ -1,0 +1,39 @@
+{
+  "request": {
+    "type": "City",
+    "query": "Tunis, Tunisia",
+    "language": "en",
+    "unit": "m"
+  },
+  "location": {
+    "name": "Tunis",
+    "country": "Tunisia",
+    "region": "Gabes",
+    "lat": "36.803",
+    "lon": "10.180",
+    "timezone_id": "Africa/Tunis",
+    "localtime": "2023-11-29 01:24",
+    "localtime_epoch": 1701221040,
+    "utc_offset": "1.0"
+  },
+  "current": {
+    "observation_time": "12:24 AM",
+    "temperature": 16,
+    "weather_code": 296,
+    "weather_icons": [
+      "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0033_cloudy_with_light_rain_night.png"
+    ],
+    "weather_descriptions": ["Light Rain"],
+    "wind_speed": 24,
+    "wind_degree": 260,
+    "wind_dir": "W",
+    "pressure": 1010,
+    "precip": 0,
+    "humidity": 88,
+    "cloudcover": 75,
+    "feelslike": 16,
+    "uv_index": 1,
+    "visibility": 8,
+    "is_day": "no"
+  }
+}
