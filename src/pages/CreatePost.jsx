@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { postSchema } from "../schemas/PostSchema"
+import { createPost } from "../apis/createPost"
 
 export default function CreatePost() {
   //* image upload configuration
@@ -35,7 +36,9 @@ export default function CreatePost() {
   const [alertOpen, setAlertOpen] = useState(false) //* alert popover
 
   const [fetching, setFethcing] = useState(false) //* state to disable multiple requests at once
-
+  const [error, setError] = useState(false) //* state to disable multiple requests at once
+  const [payload, setPayload] = useState(false) //* state to disable multiple requests at once
+  const [open, setOpen] = useState(false)
   //*forma validation configuration
   const form = useForm({ resolver: yupResolver(postSchema) })
   const { register, handleSubmit, formState } = form
@@ -44,12 +47,17 @@ export default function CreatePost() {
   //*pass the form data to the api
   const addPost = (data) => {
     if (uploadedImages.length) {
-      console.log(data.title)
-      console.log(data.description)
-      console.log(data.price)
-      console.log(data.phone)
-      console.log(data.categorie)
-      console.log(uploadedImages)
+      createPost(
+        data.title,
+        data.description,
+        data.price,
+        data.phone,
+        data.categorie,
+        uploadedImages,
+        setFethcing,
+        setPayload,
+        setError
+      ).then(() => setOpen(true))
     } else alert("please provide one image or more")
   }
   //* input select options
@@ -178,6 +186,7 @@ export default function CreatePost() {
             color: "primary.main",
           }}
         >
+          {open && <AlertPopup open={open} setOpen={setOpen} message={payload} error={error} />}
           <Button
             disabled={fetching}
             type="submit"

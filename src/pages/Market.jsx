@@ -49,7 +49,7 @@ export default function Market() {
   const navigate = useNavigate()
   const [mobileListVisible, setMobileListVisible] = useState(false) //* responsive mobile/desktop list view
   const [selectedCategorie, setSelectedCategorie] = useState("Crops") //* a selected categori to pass to the api
-  const [Error, setError] = useState() //*error state in case of fail
+  const [Error, setError] = useState(false) //*error state in case of fail
   const [fetching, setFetching] = useState(false) //* a state to prevent multiple requests at once
   const [payload, setPayload] = useState(null) //* the return data(posts) from the api
   const theme = useTheme()
@@ -61,9 +61,10 @@ export default function Market() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await getPosts(selectedCategorie, setFetching, setPayload, setError)
+        await getPosts(selectedCategorie, setFetching, setPayload, setError, Error)
       } catch (err) {
-        console.log(err)
+        setError(true)
+        console.log(Error)
       }
     }
 
@@ -171,7 +172,7 @@ export default function Market() {
             </Typography>
           </Box>
 
-          {fetching && "loading..."}
+          {fetching && <Typography fontSize="1.5rem">loading...</Typography>}
           <Box
             ref={ref}
             sx={{
@@ -182,24 +183,28 @@ export default function Market() {
               gap: "45px",
             }}
           >
-            {payload
-              ? payload.map((post, i) => (
-                  <AnimatedEventBlock index={i} key={i}>
-                    <motion.div
-                      style={{ marginBlock: "50px" }}
-                      initial={{
-                        opacity: 0,
-                        translateY: -100,
-                        translateX: i % 2 === 0 ? -200 : 200,
-                      }}
-                      animate={{ opacity: 1, translateY: 0, translateX: 0 }}
-                      transition={{ duration: 0.7, delay: i * 0.2 }}
-                    >
-                      <Posts post={post} />
-                    </motion.div>
-                  </AnimatedEventBlock>
-                ))
-              : null}
+            {Error ? (
+              <Typography fontSize="1.5rem">
+                Error downloading content. {payload?.message}
+              </Typography>
+            ) : (
+              payload?.map((post, i) => (
+                <AnimatedEventBlock index={i} key={i}>
+                  <motion.div
+                    style={{ marginBlock: "50px" }}
+                    initial={{
+                      opacity: 0,
+                      translateY: -100,
+                      translateX: i % 2 === 0 ? -200 : 200,
+                    }}
+                    animate={{ opacity: 1, translateY: 0, translateX: 0 }}
+                    transition={{ duration: 0.7, delay: i * 0.2 }}
+                  >
+                    <Posts post={post} />
+                  </motion.div>
+                </AnimatedEventBlock>
+              ))
+            )}
           </Box>
         </Box>
       </motion.div>

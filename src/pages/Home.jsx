@@ -36,6 +36,7 @@ export default function Home() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    sessionStorage.setItem("isLoggedIn", true)
   }, [])
 
   const handleResult = () => {
@@ -381,7 +382,7 @@ export default function Home() {
               }}
             >
               <Typography sx={{ fontSize: "2.3rem", color: "rgb(0,100,0)", pb: "15px" }}>
-                who are you{" "}
+                who are you
               </Typography>
               <Typography
                 sx={{
@@ -409,7 +410,6 @@ export default function Home() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
-
           display: "flex",
           alignItems: "center",
         }}
@@ -417,8 +417,8 @@ export default function Home() {
         <Box
           sx={{
             width: "100%",
-            backgroundColor: "transparent",
-            height: { xs: "100px", sm: "200px", md: "300px", lg: "400px", xl: "500px" },
+            backgroundColor: "rgba(0,0,0,0.7)",
+            height: { xs: "200px", sm: "300px", md: "400px", lg: "500px", xl: "600px" },
           }}
         />
       </Box>

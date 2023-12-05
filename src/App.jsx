@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Route, Routes } from "react-router"
 import { BrowserRouter as Router } from "react-router-dom"
@@ -15,8 +15,10 @@ const Market = React.lazy(() => import("./pages/Market"))
 const Login = React.lazy(() => import("./pages/Login"))
 import Settings from "./pages/Settings"
 import CreatePost from "./pages/CreatePost"
-
+import { PostsPrivateRouter, LoginPrivateRouter } from "./utils/PrivateRouter"
+import AccessDenied from "./pages/AccessDenied"
 export default function App() {
+  //* theme configuration
   useEffect(() => {
     const checkTheme = () => {
       if (localStorage.getItem("theme") == null) localStorage.setItem("theme", "light")
@@ -25,6 +27,7 @@ export default function App() {
     checkTheme()
   }, [])
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") == "dark" ? true : false)
+
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Box
@@ -48,26 +51,10 @@ export default function App() {
               }
             />
             <Route
-              path="/login"
-              element={
-                <React.Suspense fallback={<Loader />}>
-                  <Login />
-                </React.Suspense>
-              }
-            />
-            <Route
               path="/myplant"
               element={
                 <React.Suspense fallback={<Loader />}>
                   <MyPlant />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path="/news"
-              element={
-                <React.Suspense fallback={<Loader />}>
-                  <News />
                 </React.Suspense>
               }
             />
@@ -79,17 +66,42 @@ export default function App() {
                 </React.Suspense>
               }
             />
-            <Route
-              path="/createPost"
-              element={
-                <React.Suspense fallback={<Loader />}>
-                  <CreatePost />
-                </React.Suspense>
-              }
-            />
+            <Route element={<PostsPrivateRouter />}>
+              <Route
+                path="/news"
+                element={
+                  <React.Suspense fallback={<Loader />}>
+                    <News />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path="/createPost"
+                element={
+                  <React.Suspense fallback={<Loader />}>
+                    <CreatePost />
+                  </React.Suspense>
+                }
+              />
+            </Route>
+            <Route element={<LoginPrivateRouter />}>
+              <Route
+                path="/login"
+                element={
+                  <React.Suspense fallback={<Loader />}>
+                    <Login />
+                  </React.Suspense>
+                }
+              />
+            </Route>
+            <Route path="/error" element={<AccessDenied message={"You are already logged in"} />} />
             <Route
               path="/*"
-              element={<h1 style={{ marginTop: "150px" }}>Sorry this page doesnt exist</h1>}
+              element={
+                <Typography sx={{ m: "150px 0 0 50px", fontSize: "2rem" }}>
+                  Sorry this page doesnt exist
+                </Typography>
+              }
             />
           </Routes>
           <Options />

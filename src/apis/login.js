@@ -29,9 +29,9 @@ export const login = async (userEmail, userPassword, setFetching, setError, setP
     sessionStorage.setItem("firstName", first_name)
     sessionStorage.setItem("lastName", last_name)
     sessionStorage.setItem("location", location)
-    sessionStorage.setItem("email", userEmail)
-    sessionStorage.setItem("password", userPassword)
-    sessionStorage.setItem("token", token)
+    sessionStorage.setItem("email", email)
+    sessionStorage.setItem("password", password)
+    // sessionStorage.setItem("token", token)//! there is no token currently
     sessionStorage.setItem("isLoggedIn", true)
     setError(false)
   } catch (err) {

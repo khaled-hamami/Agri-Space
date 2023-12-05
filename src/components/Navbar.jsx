@@ -78,7 +78,7 @@ export default function Navbar() {
         News
       </CustomNavLink>
       {sessionStorage.getItem("isLoggedIn") ? (
-        <Button color="error" variant="contained" endIcon={<Logout />} onClick={logout}>
+        <Button color="error" variant="contained" endIcon={<Logout />} onClick={() => logout()}>
           Logout
         </Button>
       ) : (
