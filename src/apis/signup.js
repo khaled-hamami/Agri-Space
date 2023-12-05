@@ -24,17 +24,16 @@ export const signup = async (
         location: delegation,
       }),
     })
-    console.log(firstName)
-    console.log(lastName)
-    console.log(delegation)
-    console.log(email)
-    console.log(password)
+
     if (!response.ok) throw new Error("Error. Please try again later")
     console.log(response.ok)
     const data = await response.json()
     console.log(data)
     if (response.status === 401 || response.status === 400) throw new Error(data.message)
-    if (response.status === 201) setPayload(data.message)
+    if (response.status === 201) {
+      setPayload(data.message)
+      setError(false)
+    }
   } catch (err) {
     console.log(err)
     setError(true)

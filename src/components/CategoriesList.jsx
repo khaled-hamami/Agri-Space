@@ -9,7 +9,7 @@ import AgricultureIcon from "@mui/icons-material/Agriculture"
 import CategoryIcon from "@mui/icons-material/Category"
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety"
 import { Button, Divider } from "@mui/material"
-import { useNavigate } from "react-router"
+import { Navigate, useNavigate } from "react-router"
 
 const categories = [
   { name: "Crops", icon: <GrassIcon /> },
@@ -36,9 +36,9 @@ export default function CategoriesList({ setSelectedCategorie }) {
                 mb: "10px",
                 "&:hover": { color: "primary.dark" },
               }}
-              onClick={() =>
-                sessionStorage.getItem("LoggedIn") ? navigate("/createPost") : navigate("/login")
-              }
+              onClick={() => {
+                sessionStorage.getItem("isLoggedIn") ? navigate("/createPost") : navigate("/login")
+              }}
             >
               Add a post
             </Button>

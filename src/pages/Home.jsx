@@ -36,7 +36,7 @@ export default function Home() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    sessionStorage.setItem("isLoggedIn", true)
+    // sessionStorage.setItem("isLoggedIn", true)
   }, [])
 
   const handleResult = () => {
@@ -72,7 +72,6 @@ export default function Home() {
             flexDirection: "column",
             minHeight: "100svh",
             mt: { xs: "30svw", sm: "20svw", md: "7vw" },
-            // bgcolor: "rgba(255,0,0,.5)",
           }}
         >
           <motion.div
@@ -320,8 +319,8 @@ export default function Home() {
                 justifyContent: "center",
               }}
             >
-              <Typography sx={{ fontSize: "2.3rem", color: "rgb(0,100,0)", pb: "15px" }}>
-                Why choose us{" "}
+              <Typography sx={{ fontSize: "2.3rem", color: "primary.main", pb: "15px" }}>
+                Why choose us
               </Typography>
               <Typography
                 sx={{
@@ -342,8 +341,6 @@ export default function Home() {
                 height: "100%",
                 width: "100%",
                 flex: 2,
-                // backgroundColor: "rgba(255,255,255,.5)",
-                display: "flex",
                 justifyContent: "flex-end",
               }}
             >
@@ -359,7 +356,6 @@ export default function Home() {
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
               justifyContent: "space-between",
-              // backgroundColor: "rgba(255,0,0,.5)",
             }}
           >
             <Box
@@ -367,7 +363,6 @@ export default function Home() {
                 height: "100%",
                 width: "100%",
                 flex: 1,
-                // backgroundColor: "rgba(255,255,255,.5)",
                 display: "flex",
               }}
             >
@@ -381,7 +376,7 @@ export default function Home() {
                 justifyContent: "center",
               }}
             >
-              <Typography sx={{ fontSize: "2.3rem", color: "rgb(0,100,0)", pb: "15px" }}>
+              <Typography sx={{ fontSize: "2.3rem", color: "primary.main", pb: "15px" }}>
                 who are you
               </Typography>
               <Typography

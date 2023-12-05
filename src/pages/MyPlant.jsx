@@ -9,8 +9,24 @@ import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { useTheme } from "@emotion/react"
 import { reviewMyPlant } from "../apis/reviewMyPlant"
-
+import { Cancel } from "@mui/icons-material"
+import { useNavigate } from "react-router"
+import { atom, useAtom } from "jotai"
+// const demo = {
+//   title: "tomato : a tomato",
+//   desc: "lorem ipsum dolor sit amet lorem ezklhfezkf kjzehfze lfhEZKRLJFG ZLJRGBNerklj gbnkejLR HFNKLErzjhf gkljer gneNGJ.ERNG KErn gkjerbngkj eRBGNLEKgjlke GJ LREJF LR FLZJFJZRO¨GHZifjz lghogùzgoe",
+//   prevent:
+//     "test calleed way to hiu yu i jhy redv hgta rejfjh ekjrfh ekjghekrhg erg erohg ergh ERG reh herlg her gheRGER E GERGKEGH ",
+//   image_url: "http://a radndom image url",
+//   pred: 9,
+//   sname: "test sname  ufkhe fkh no  data  found",
+//   simage: "https://a random similar image preview",
+//   uimage: "http://a random u???? image preview",
+// }
+export const data = atom()
 export default function MyPlant() {
+  const [Aidata, setAiData] = useAtom(data)
+  const navigate = useNavigate()
   const [error, setError] = useState(false) //* error state incase of error
   const [payload, setPayload] = useState(false) // *payload state that contain either data of response
   const [fetching, setFetching] = useState(false) //* to disable confirm button to prevent mutiple requests
@@ -32,41 +48,68 @@ export default function MyPlant() {
       reader.onloadend = () => {
         const imageUrl = reader.result
         setImage(imageUrl)
-      }
-      reader.readAsDataURL(file)
 
-      //*convert the image to the correct format to display to the user before he can confirm
-      setFiles([Object.assign(file, { preview: URL.createObjectURL(file) })])
+        // convert the image to the correct format to display to the user before he can confirm
+        setFiles([Object.assign(file, { preview: URL.createObjectURL(file) })])
+
+        // Review the plant by sending a POST request to the Django backend
+        // reviewMyPlant(file, setFetching, setError, setPayload);
+      }
+
+      reader.readAsDataURL(file)
     }
   }, [])
+
   //*drop zone hook that handle when something is hovering or dropeed
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "image/*": [] },
+  })
+
   //* verify if the the image is only one and if the image exceeds the max size or if the image extension is invalid
-  const handleSubmission = async () => {
-    if (files.length === 1) {
-      const file = files[0]
-      const maxSizeInBytes = 3 * 1024 * 1024 // 3 MB
+  // const handleSubmission = () => {
+  //   if (files.length === 1) {
+  //     //* declaration
+  //     const file = files[0]
+  //     const maxSizeInBytes = 3 * 1024 * 1024 // 3 MB
+  //     if (file.size > maxSizeInBytes) {
+  //       alert("Maximum size exceeded")
+  //     } else {
+  //       const allowedExtensions = ["png", "jpeg", "jpg"]
+  //       const fileExtension = file.name
+  //         .toLowerCase()
+  //         .slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2)
+  //       if (allowedExtensions.includes(fileExtension)) {
+  //         //* File has a valid extension, proceed with the reviewMyPlant function
+  //         reviewMyPlant(setFetching, setError, setPayload).then(() => {
+  //           setOpen(true)
+  //           // setAiData(demo) //! to set to payload
+  //           // navigate("/aiResult")
+  //         })
+  //       } else {
+  //         alert("Invalid file type. Please submit a .png, .jpeg, or .jpg file.")
+  //       }
+  //     }
+  //   } else {
+  //     alert("Please submit 1 image")
+  //   }
+  // }
+  function send() {
+    let url = "http://192.168.252.224:8000/submit"
+    let formData = new FormData()
+    let inputElement = document.getElementById("image-upload")
+    let file = inputElement.files[0]
+    console.log(inputElement)
+    formData.append("image", file)
 
-      if (file.size > maxSizeInBytes) {
-        alert("Maximum size exceeded")
-      } else {
-        const allowedExtensions = ["png", "jpeg", "jpg"]
-        const fileExtension = file.name
-          .toLowerCase()
-          .slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2)
-        console.log(fileExtension)
-        if (allowedExtensions.includes(fileExtension)) {
-          //* File has a valid extension, proceed with the reviewMyPlant function
-          reviewMyPlant(image, setFetching, setError, setPayload).then(() => setOpen(true))
-        } else {
-          alert("Invalid file type. Please submit a .png, .jpeg, or .jpg file.")
-        }
-      }
-    } else {
-      alert("Please submit 1 image")
-    }
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error:", error))
   }
-
   return (
     <Box
       sx={{
@@ -79,7 +122,7 @@ export default function MyPlant() {
       <Box
         sx={{
           width: "100%",
-          py: "40px",
+          py: "30px",
           px: { xs: "30px", sm: "60px", md: "80px", lg: "90px", xl: "100px" },
         }}
       >
@@ -111,6 +154,7 @@ export default function MyPlant() {
             >
               <ImageIcon />
             </IconButton>
+
             <div>
               <Typography sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>upload image</Typography>
               <Typography fontSize=".9rem">drag and drop or click the import Button</Typography>
@@ -150,6 +194,7 @@ export default function MyPlant() {
             <IconButton
               sx={{
                 cursor: "auto",
+
                 backgroundColor: "primary.dark",
                 "&:hover": { backgroundColor: "primary.main" },
                 color: "contrast.main",
@@ -178,20 +223,40 @@ export default function MyPlant() {
         <Box
           sx={{
             marginX: "auto",
-            my: "15px",
             width: { xs: "90%", sm: "80%", md: "70%", lg: "50%" },
             display: "flex",
             justifyContent: "space-between",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.9rem", lg: "2.1rem", xl: "2.5rem" },
-            }}
-          >
-            Upload Files
-          </Typography>
-          {files.length > 0 && <Button onClick={() => setFiles([])}>Cancel</Button>}
+          <div>
+            <Typography
+              sx={{
+                fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.9rem", lg: "2.1rem", xl: "2.5rem" },
+              }}
+            >
+              Upload Files
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: ".8rem", sm: "1rem" },
+              }}
+            >
+              * Please make sure to upload only one image
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: ".8rem", sm: "1rem" },
+              }}
+            >
+              * this AI is not 100% accurate so please if the result is unsatisfying try again,
+              sorry
+            </Typography>
+          </div>
+          {files.length > 0 && (
+            <Button onClick={() => setFiles([])} endIcon={<Cancel />}>
+              Cancel
+            </Button>
+          )}
         </Box>
         <Box
           sx={{
@@ -206,7 +271,7 @@ export default function MyPlant() {
             alignItems: "center",
             height: { xs: "20svh", sm: "30svh", md: "40svh", lg: "50svh" },
           }}
-          {...getRootProps()}
+          // {...getRootProps()}
         >
           <Box
             sx={{
@@ -280,7 +345,13 @@ export default function MyPlant() {
               </Typography>
             )}
           </Box>
-          <input {...getInputProps()} style={{ display: "none" }} accept=".png, .jpg, .jpeg" />
+          <input
+          type="file"
+            // {...getInputProps()}
+            // style={{ display: "none" }}
+            // accept=".png, .jpg, .jpeg"
+            id="image-upload"
+          />
           <Box
             sx={{
               my: "25px",
@@ -306,7 +377,13 @@ export default function MyPlant() {
             width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
           }}
         >
-          <Button disabled={fetching} variant="outlined" onClick={handleSubmission} fullWidth>
+          <Button
+            disabled={fetching}
+            type="submit"
+            variant="outlined"
+            onClick={() => send()}
+            fullWidth
+          >
             {fetching ? "loading..." : "Confirm"}
           </Button>
         </Box>

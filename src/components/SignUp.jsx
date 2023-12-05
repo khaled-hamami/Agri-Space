@@ -26,7 +26,15 @@ export default function SignUp({ setValue }) {
       setFetching,
       setError,
       setPayload
-    ).then(() => setOpen(true))
+    ).then(() => {
+      setOpen(true)
+      console.log(error)
+      if (!error) {
+        setTimeout(() => {
+          setValue(0)
+        }, 1000)
+      }
+    })
   }
   return (
     <div
@@ -47,7 +55,7 @@ export default function SignUp({ setValue }) {
           fontSize: { xs: "2rem", sm: "2.3rem", md: "2.5rem", lg: "2.8rem" },
           my: "25px",
         }}
-        >
+      >
         Sign Up
       </Typography>
       <Box
@@ -62,7 +70,7 @@ export default function SignUp({ setValue }) {
           alignItems: "center",
           gap: "30px",
         }}
-        >
+      >
         <Box
           sx={{
             height: "100%",
@@ -71,7 +79,7 @@ export default function SignUp({ setValue }) {
             flexDirection: { xs: "column", sm: "row" },
             gap: "23px",
           }}
-          >
+        >
           <TextField
             fullWidth
             id="firstName"
@@ -81,7 +89,7 @@ export default function SignUp({ setValue }) {
             {...register("firstName")}
             error={errors.firstName ? true : false}
             helperText={errors.firstName?.message}
-            />
+          />
           <TextField
             fullWidth
             id="lastName"
@@ -91,7 +99,7 @@ export default function SignUp({ setValue }) {
             {...register("lastName")}
             error={errors.lastName ? true : false}
             helperText={errors.lastName?.message}
-            />
+          />
         </Box>
         <DelegationList
           // setSelectedItem={setSelectedItem} //? incase the selected state of delegations is needed
@@ -99,7 +107,7 @@ export default function SignUp({ setValue }) {
           registrer={{ ...register("delegation") }}
           error={errors.delegation ? true : false}
           helperText={errors.delegation?.message}
-          />
+        />
         <TextField
           fullWidth
           id="email"
@@ -109,7 +117,7 @@ export default function SignUp({ setValue }) {
           {...register("email")}
           error={errors.email ? true : false}
           helperText={errors.email?.message}
-          />
+        />
         <TextField
           fullWidth
           id="password"
@@ -126,19 +134,19 @@ export default function SignUp({ setValue }) {
             width: { xs: "80%", sm: "70%", md: "60%" },
             color: "primary.main",
           }}
-          >
+        >
           <Button
             disabled={fetching}
             type="submit"
             variant="contained"
             fullWidth
             sx={{ my: "30px", mt: "40px", borderRadius: "20px" }}
-            >
+          >
             {fetching ? "loding..." : "Sign Up"}
           </Button>
         </Box>
       </Box>
-          {open && <AlertPopup open={open} setOpen={setOpen} message={payLoad} error={error} />}
+      {open && <AlertPopup open={open} setOpen={setOpen} message={payLoad} error={error} />}
       <Box display="flex" gap="5px">
         <Typography color="contrast.reverse" sx={{ my: "15px" }}>
           Already have an account ? &nbsp;&nbsp;&nbsp;

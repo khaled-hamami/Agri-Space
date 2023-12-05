@@ -1,6 +1,20 @@
 import { Box } from "@mui/material"
-
-export default function News() {
+import { useAtom } from "jotai"
+import { data } from "./MyPlant"
+const demo = {
+  title: "tomato : a tomato",
+  desc: "lorem ipsum dolor sit amet lorem ezklhfezkf kjzehfze lfhEZKRLJFG ZLJRGBNerklj gbnkejLR HFNKLErzjhf gkljer gneNGJ.ERNG KErn gkjerbngkj eRBGNLEKgjlke GJ LREJF LR FLZJFJZRO¨GHZifjz lghogùzgoe",
+  prevent:
+    "test calleed way to hiu yu i jhy redv hgta rejfjh ekjrfh ekjghekrhg erg erohg ergh ERG reh herlg her gheRGER E GERGKEGH ",
+  image_url: "http://a radndom image url",
+  pred: 9,
+  sname: "test sname  ufkhe fkh no  data  found",
+  simage: "https://a random similar image preview",
+  uimage: "http://a random u???? image preview",
+}
+export default function AiResult() {
+  const [Aidata, setAiData] = useAtom(data)
+  console.log(Aidata)
   return (
     <Box
       sx={{

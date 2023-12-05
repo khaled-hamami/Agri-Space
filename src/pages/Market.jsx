@@ -108,7 +108,7 @@ export default function Market() {
           <IconButton
             size="large"
             onClick={() =>
-              sessionStorage.getItem("LoggedIn") ? navigate("/createPost") : navigate("/login")
+              sessionStorage.getItem("isLoggedIn") ? navigate("/createPost") : navigate("/login")
             }
           >
             <AddIcon />
