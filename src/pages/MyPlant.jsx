@@ -12,17 +12,8 @@ import { reviewMyPlant } from "../apis/reviewMyPlant"
 import { Cancel } from "@mui/icons-material"
 import { useNavigate } from "react-router"
 import { atom, useAtom } from "jotai"
-// const demo = {
-//   title: "tomato : a tomato",
-//   desc: "lorem ipsum dolor sit amet lorem ezklhfezkf kjzehfze lfhEZKRLJFG ZLJRGBNerklj gbnkejLR HFNKLErzjhf gkljer gneNGJ.ERNG KErn gkjerbngkj eRBGNLEKgjlke GJ LREJF LR FLZJFJZRO¨GHZifjz lghogùzgoe",
-//   prevent:
-//     "test calleed way to hiu yu i jhy redv hgta rejfjh ekjrfh ekjghekrhg erg erohg ergh ERG reh herlg her gheRGER E GERGKEGH ",
-//   image_url: "http://a radndom image url",
-//   pred: 9,
-//   sname: "test sname  ufkhe fkh no  data  found",
-//   simage: "https://a random similar image preview",
-//   uimage: "http://a random u???? image preview",
-// }
+import { motion } from "framer-motion"
+
 export const data = atom()
 export default function MyPlant() {
   const [Aidata, setAiData] = useAtom(data)
@@ -31,8 +22,8 @@ export default function MyPlant() {
   const [payload, setPayload] = useState(false) // *payload state that contain either data of response
   const [fetching, setFetching] = useState(false) //* to disable confirm button to prevent mutiple requests
   const [open, setOpen] = useState(false) //* to open the alert incase of error or success
-
-  const maxSizeInBytes = 3 * 1024 * 1024 //* 3MB : max size that uploaded file can be
+  const [invalidConfirm, setInavlidCofirm] = useState(false) //* to open the alert incase of error or success
+  const [invalidConfirmMessage, setInavlidCofirmMessage] = useState("") //* to open the alert incase of error or success
 
   const theme = useTheme()
 
@@ -67,48 +58,35 @@ export default function MyPlant() {
   })
 
   //* verify if the the image is only one and if the image exceeds the max size or if the image extension is invalid
-  // const handleSubmission = () => {
-  //   if (files.length === 1) {
-  //     //* declaration
-  //     const file = files[0]
-  //     const maxSizeInBytes = 3 * 1024 * 1024 // 3 MB
-  //     if (file.size > maxSizeInBytes) {
-  //       alert("Maximum size exceeded")
-  //     } else {
-  //       const allowedExtensions = ["png", "jpeg", "jpg"]
-  //       const fileExtension = file.name
-  //         .toLowerCase()
-  //         .slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2)
-  //       if (allowedExtensions.includes(fileExtension)) {
-  //         //* File has a valid extension, proceed with the reviewMyPlant function
-  //         reviewMyPlant(setFetching, setError, setPayload).then(() => {
-  //           setOpen(true)
-  //           // setAiData(demo) //! to set to payload
-  //           // navigate("/aiResult")
-  //         })
-  //       } else {
-  //         alert("Invalid file type. Please submit a .png, .jpeg, or .jpg file.")
-  //       }
-  //     }
-  //   } else {
-  //     alert("Please submit 1 image")
-  //   }
-  // }
-  function send() {
-    let url = "http://192.168.252.224:8000/submit"
-    let formData = new FormData()
-    let inputElement = document.getElementById("image-upload")
-    let file = inputElement.files[0]
-    console.log(inputElement)
-    formData.append("image", file)
-
-    fetch(url, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Error:", error))
+  const handleSubmission = () => {
+    if (files.length === 1) {
+      //* declaration
+      const file = files[0]
+      const maxSizeInBytes = 3 * 1024 * 1024 //* 3MB : max size that uploaded file can be
+      if (file.size > maxSizeInBytes) {
+        setInavlidCofirm(true)
+        setInavlidCofirmMessage("Maximum size exceeded")
+      } else {
+        const allowedExtensions = ["png", "jpeg", "jpg"]
+        const fileExtension = file.name
+          .toLowerCase()
+          .slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2)
+        if (allowedExtensions.includes(fileExtension)) {
+          //* File has a valid extension, proceed with the reviewMyPlant function
+          reviewMyPlant(files[0], setFetching, setError, setPayload).then((data) => {
+            setOpen(true)
+            setAiData(data)
+            navigate("/aiResult")
+          })
+        } else {
+          setInavlidCofirm(true)
+          setInavlidCofirmMessage("Invalid file type. Please submit a .jpg file.")
+        }
+      }
+    } else {
+      setInavlidCofirm(true)
+      setInavlidCofirmMessage("Please submit 1 image")
+    }
   }
   return (
     <Box
@@ -119,178 +97,268 @@ export default function MyPlant() {
         pt: { sm: "85px" },
       }}
     >
-      <Box
-        sx={{
-          width: "100%",
-          py: "30px",
-          px: { xs: "30px", sm: "60px", md: "80px", lg: "90px", xl: "100px" },
-        }}
+      <motion.div
+        initial={{ translateY: -200, opacity: 0 }}
+        animate={{ translateY: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
       >
         <Box
           sx={{
             width: "100%",
-            height: "80%",
-            display: "flex",
-            justifyContent: { xs: "flex-start", md: "space-evenly" },
-            alignItems: { xs: "flex-start", md: "center" },
-            flexDirection: { xs: "column", md: "row" },
+            py: "10px",
+            px: { xs: "30px", sm: "60px", md: "80px", lg: "90px", xl: "100px" },
           }}
         >
           <Box
             sx={{
+              width: "100%",
+              height: "80%",
               display: "flex",
-              alignItems: "center",
-              gap: "15px",
-              my: { xs: "15px", md: "none" },
+              justifyContent: { xs: "flex-start", md: "space-evenly" },
+              alignItems: { xs: "flex-start", md: "center" },
+              flexDirection: { xs: "column", md: "row" },
             }}
           >
-            <IconButton
+            <Box
               sx={{
-                cursor: "auto",
-                backgroundColor: "primary.dark",
-                color: "contrast.main",
-                "&:hover": { backgroundColor: "primary.main" },
+                display: "flex",
+                alignItems: "center",
+                gap: "15px",
+                my: { xs: "15px", md: "none" },
               }}
             >
-              <ImageIcon />
-            </IconButton>
+              <IconButton
+                sx={{
+                  cursor: "auto",
+                  backgroundColor: "primary.dark",
+                  color: "contrast.main",
+                  "&:hover": { backgroundColor: "primary.main" },
+                }}
+              >
+                <ImageIcon />
+              </IconButton>
 
-            <div>
-              <Typography sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>upload image</Typography>
-              <Typography fontSize=".9rem">drag and drop or click the import Button</Typography>
-            </div>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-              my: { xs: "15px", md: "none" },
-            }}
-          >
-            <IconButton
+              <div>
+                <Typography
+                  sx={{ fontSize: "1.1rem", fontWeight: "bold", color: "contrast.reverse" }}
+                >
+                  upload image
+                </Typography>
+                <Typography fontSize=".9rem" sx={{ color: "contrast.reverse" }}>
+                  drag and drop or click the import Button
+                </Typography>
+              </div>
+            </Box>
+            <Box
               sx={{
-                cursor: "auto",
-                backgroundColor: "primary.dark",
-                "&:hover": { backgroundColor: "primary.main" },
-                color: "contrast.main",
+                display: "flex",
+                alignItems: "center",
+                gap: "15px",
+                my: { xs: "15px", md: "none" },
               }}
             >
-              <CoronavirusIcon />
-            </IconButton>
-            <div>
-              <Typography sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>Process Image</Typography>
-              <Typography fontSize=".9rem">we will inform you if the plant is sick</Typography>
-            </div>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-              my: { xs: "15px", md: "none" },
-            }}
-          >
-            <IconButton
+              <IconButton
+                sx={{
+                  cursor: "auto",
+                  backgroundColor: "primary.dark",
+                  "&:hover": { backgroundColor: "primary.main" },
+                  color: "contrast.main",
+                }}
+              >
+                <CoronavirusIcon />
+              </IconButton>
+              <div>
+                <Typography
+                  sx={{ fontSize: "1.1rem", fontWeight: "bold", color: "contrast.reverse" }}
+                >
+                  Process Image
+                </Typography>
+                <Typography sx={{ color: "contrast.reverse" }} fontSize=".9rem">
+                  we will inform you if the plant is sick
+                </Typography>
+              </div>
+            </Box>
+            <Box
               sx={{
-                cursor: "auto",
+                display: "flex",
+                alignItems: "center",
+                gap: "15px",
+                my: { xs: "15px", md: "none" },
+                color: "contrast.reverse",
+              }}
+            >
+              <IconButton
+                sx={{
+                  cursor: "auto",
 
-                backgroundColor: "primary.dark",
-                "&:hover": { backgroundColor: "primary.main" },
-                color: "contrast.main",
-              }}
-            >
-              <VaccinesIcon />
-            </IconButton>
-            <div>
-              <Typography sx={{ fontSize: "1.1rem", fontWeight: "bold" }}>
-                procedural cautions
-              </Typography>
-              <Typography fontSize=".9rem">
-                we ill suggest the best medicin for the plant
-              </Typography>
-            </div>
+                  backgroundColor: "primary.dark",
+                  "&:hover": { backgroundColor: "primary.main" },
+                  color: "contrast.main",
+                }}
+              >
+                <VaccinesIcon />
+              </IconButton>
+              <div>
+                <Typography
+                  sx={{ fontSize: "1.1rem", fontWeight: "bold", color: "contrast.reverse" }}
+                >
+                  procedural cautions
+                </Typography>
+                <Typography fontSize=".9rem">
+                  we ill suggest the best medicin for the plant
+                </Typography>
+              </div>
+            </Box>
           </Box>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          minHeight: "100px",
-          width: "100%",
-        }}
-      >
-        {open && <AlertPopup open={open} setOpen={setOpen} message={payload} error={error} />}
-        <Box
-          sx={{
-            marginX: "auto",
-            width: { xs: "90%", sm: "80%", md: "70%", lg: "50%" },
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
-            <Typography
-              sx={{
-                fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.9rem", lg: "2.1rem", xl: "2.5rem" },
-              }}
-            >
-              Upload Files
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: ".8rem", sm: "1rem" },
-              }}
-            >
-              * Please make sure to upload only one image
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: ".8rem", sm: "1rem" },
-              }}
-            >
-              * this AI is not 100% accurate so please if the result is unsatisfying try again,
-              sorry
-            </Typography>
-          </div>
-          {files.length > 0 && (
-            <Button onClick={() => setFiles([])} endIcon={<Cancel />}>
-              Cancel
-            </Button>
-          )}
         </Box>
         <Box
           sx={{
-            width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
-            border: "dashed 2px",
-            borderColor: isDragActive ? "primary.light" : "primary.dark",
-            borderRadius: "20px",
-            boxShadow: "paper",
-            marginX: "auto",
-            display: "felx",
-            justifyContent: "center",
-            alignItems: "center",
-            height: { xs: "20svh", sm: "30svh", md: "40svh", lg: "50svh" },
+            minHeight: "100px",
+            width: "100%",
           }}
-          // {...getRootProps()}
         >
+          {open && <AlertPopup open={open} setOpen={setOpen} message={payload} error={error} />}
           <Box
             sx={{
               marginX: "auto",
-              width: { xs: "80%", sm: "70%", md: "60%", lg: "50%" },
-              height: { xs: "100%" },
+              width: { xs: "90%", sm: "80%", md: "70%", lg: "50%" },
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            {!isDragActive ? (
-              files.length === 0 ? (
-                <>
-                  <img
-                    src={theme.palette.mode === "dark" ? draganddrop : draganddropdark}
-                    style={{ width: "40%" }}
-                  />
+            <div>
+              <Typography
+                sx={{
+                  fontSize: {
+                    xs: "1.25rem",
+                    sm: "1.7rem",
+                    md: "1.9rem",
+                    lg: "2.1rem",
+                    xl: "2.5rem",
+                  },
+                  color: "contrast.reverse",
+                }}
+              >
+                Upload Files
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: ".8rem", sm: "1rem" },
+                  color: "contrast.reverse",
+                }}
+              >
+                <span style={{ color: "#f00" }}>*</span> Please make sure to upload only one image
+                (jpg format)
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: ".8rem", sm: "1rem" },
+                  color: "contrast.reverse",
+                }}
+              >
+                <span style={{ color: "#f00" }}>*</span> this AI is not 100% accurate so please if
+                the result is unsatisfying try again
+              </Typography>
+            </div>
+            {files.length > 0 && (
+              <Button
+                onClick={() => setFiles([])}
+                endIcon={<Cancel />}
+                sx={{
+                  color: "contrast.reverse",
+                  height: "",
+                  "&:hover": { scale: "1.02" },
+                }}
+              >
+                Cancel
+              </Button>
+            )}
+          </Box>
+          <motion.div
+            initial={{ translateX: -400, opacity: 0 }}
+            animate={{ translateX: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            style={{ marginTop: "15px" }}
+          >
+            {invalidConfirm && (
+              <AlertPopup
+                open={invalidConfirm}
+                setOpen={setInavlidCofirm}
+                message={invalidConfirmMessage}
+                error={true}
+              />
+            )}
+            <Box
+              sx={{
+                width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
+                border: "dashed 2px",
+                borderColor: isDragActive ? "primary.light" : "primary.dark",
+                borderRadius: "20px",
+                boxShadow: "paper",
+                marginX: "auto",
+                display: "felx",
+                justifyContent: "center",
+                alignItems: "center",
+                height: { xs: "20svh", sm: "30svh", md: "40svh", lg: "50svh" },
+              }}
+              {...getRootProps()}
+            >
+              <Box
+                sx={{
+                  marginX: "auto",
+                  width: { xs: "80%", sm: "70%", md: "60%", lg: "50%" },
+                  height: { xs: "100%" },
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {!isDragActive ? (
+                  files.length === 0 ? (
+                    <>
+                      <img
+                        src={theme.palette.mode === "dark" ? draganddrop : draganddropdark}
+                        style={{ width: "40%" }}
+                      />
+                      <Typography
+                        sx={{
+                          color: "contrast.reverse",
+                          fontSize: {
+                            xs: "1.3rem",
+                            sm: "1.5rem",
+                            md: "1.7rem",
+                            lg: "1.9rem",
+                            xl: "2.2rem",
+                          },
+                        }}
+                      >
+                        Drag and drop
+                      </Typography>
+                    </>
+                  ) : (
+                    files.map((file) => (
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                        key={file.name}
+                      >
+                        <img
+                          src={file.preview}
+                          width="40%"
+                          style={{ marginTop: "15px", borderRadius: "10px" }}
+                          alt={file.name}
+                        />
+                        <Typography>{file.name}</Typography>
+                      </div>
+                    ))
+                  )
+                ) : (
                   <Typography
                     sx={{
                       color: "contrast.reverse",
@@ -303,91 +371,61 @@ export default function MyPlant() {
                       },
                     }}
                   >
-                    Drag and drop
+                    Release
                   </Typography>
-                </>
-              ) : (
-                files.map((file) => (
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                    key={file.name}
-                  >
-                    <img
-                      src={file.preview}
-                      width="40%"
-                      style={{ marginTop: "15px", borderRadius: "10px" }}
-                      alt={file.name}
-                    />
-                    <Typography>{file.name}</Typography>
-                  </div>
-                ))
-              )
-            ) : (
-              <Typography
+                )}
+              </Box>
+              <input
+                // type="file"
+                // {...getInputProps()}
+                style={{ display: "none" }}
+                accept=".jpg"
+                id="image-upload"
+              />
+              <Box
                 sx={{
-                  color: "contrast.reverse",
-                  fontSize: {
-                    xs: "1.3rem",
-                    sm: "1.5rem",
-                    md: "1.7rem",
-                    lg: "1.9rem",
-                    xl: "2.2rem",
-                  },
+                  my: "25px",
+                  width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
+                  display: "flex",
+                  marginX: "auto",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                Release
-              </Typography>
-            )}
-          </Box>
-          <input
-          type="file"
-            // {...getInputProps()}
-            // style={{ display: "none" }}
-            // accept=".png, .jpg, .jpeg"
-            id="image-upload"
-          />
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ backgroundColor: "rgba(0,0,0,.05)", color: "contrast.reverse" }}
+                >
+                  Upload file
+                </Button>
+              </Box>
+            </Box>
+          </motion.div>
+
           <Box
             sx={{
-              my: "25px",
-              width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
-              display: "flex",
               marginX: "auto",
+              display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              my: "80px",
+              width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
             }}
           >
-            <Button variant="outlined" fullWidth>
-              Upload file
+            <Button
+              disabled={fetching}
+              type="submit"
+              sx={{ backgroundColor: "rgba(0,0,0,.05)", color: "contrast.reverse" }}
+              variant="outlined"
+              onClick={() => handleSubmission()}
+              fullWidth
+            >
+              {fetching ? "loading..." : "Confirm"}
             </Button>
           </Box>
         </Box>
-        <Box
-          sx={{
-            marginX: "auto",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            my: "80px",
-            width: { xs: "70%", sm: "80%", md: "70%", lg: "50%" },
-          }}
-        >
-          <Button
-            disabled={fetching}
-            type="submit"
-            variant="outlined"
-            onClick={() => send()}
-            fullWidth
-          >
-            {fetching ? "loading..." : "Confirm"}
-          </Button>
-        </Box>
-      </Box>
+      </motion.div>
     </Box>
   )
 }

@@ -17,7 +17,7 @@ import Settings from "./pages/Settings"
 import CreatePost from "./pages/CreatePost"
 import { PostsPrivateRouter, LoginPrivateRouter } from "./utils/PrivateRouter"
 import AccessDenied from "./pages/AccessDenied"
-import AiResult from "./pages/aiResult"
+const AiResult = React.lazy(() => import("./pages/AiResult"))
 export default function App() {
   //* theme configuration
   useEffect(() => {
@@ -51,20 +51,20 @@ export default function App() {
                 </React.Suspense>
               }
             />
+            <Route
+              path="/settings"
+              element={
+                <React.Suspense fallback={<Loader />}>
+                  <Settings setTheme={setDarkMode} />
+                </React.Suspense>
+              }
+            />
             <Route element={<PostsPrivateRouter />}>
               <Route
                 path="/myplant"
                 element={
                   <React.Suspense fallback={<Loader />}>
                     <MyPlant />
-                  </React.Suspense>
-                }
-              />
-              <Route
-                path="/settings"
-                element={
-                  <React.Suspense fallback={<Loader />}>
-                    <Settings setTheme={setDarkMode} />
                   </React.Suspense>
                 }
               />
@@ -86,7 +86,7 @@ export default function App() {
               />
             </Route>
             <Route
-              path="/AiResult"
+              path="/aiResult"
               element={
                 <React.Suspense fallback={<Loader />}>
                   <AiResult />

@@ -17,6 +17,7 @@ export default function Market() {
   const [ref, outerComponentInView] = useInView({
     triggerOnce: false,
   })
+  //* animation component
   const AnimatedEventBlock = ({ children, index }) => {
     const [innerRef, inView] = useInView({
       triggerOnce: false,
@@ -57,19 +58,19 @@ export default function Market() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
+  //* load the posts as soon as the page load or the categorie changes
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await getPosts(selectedCategorie, setFetching, setPayload, setError, Error)
+        await getPosts(selectedCategorie, setFetching, setPayload, setError, Error) //* api call
       } catch (err) {
         setError(true)
         console.log(Error)
       }
     }
 
-    fetchData() // Call fetchData here, not inside the try-catch block
-  }, [selectedCategorie])
+    fetchData()
+  }, [selectedCategorie]) //* array of dependecies of use Effect objects
 
   return (
     <Box
@@ -139,7 +140,8 @@ export default function Market() {
               display: { xs: "none", md: "block" },
               zIndex: 1,
               pt: { md: "70px", lg: "80px", xl: "90px" },
-              borderRight: "1px solid #0AB68B",
+              // borderRight: "1px solid #0AB68B",
+              boxShadow: "10px 0 15px rgba(0, 0, 0, 0.1)",
             }}
             component="nav"
             aria-labelledby="nested-list-subheader"
@@ -157,7 +159,7 @@ export default function Market() {
           <Box
             width="100%"
             borderRadius="10vw"
-            bgcolor="rgba(0,255,0,.2)"
+            bgcolor="rgba(10, 182, 139,0.1)"
             display="flex"
             justifyContent="center"
             sx={{ my: "15px" }}
@@ -172,7 +174,11 @@ export default function Market() {
             </Typography>
           </Box>
 
-          {fetching && <Typography fontSize="1.5rem">loading...</Typography>}
+          {fetching && (
+            <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
+              loading...
+            </Typography>
+          )}
           <Box
             ref={ref}
             sx={{
@@ -184,7 +190,7 @@ export default function Market() {
             }}
           >
             {Error ? (
-              <Typography fontSize="1.5rem">
+              <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
                 Error downloading content. {payload?.message}
               </Typography>
             ) : (

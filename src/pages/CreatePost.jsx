@@ -125,7 +125,6 @@ export default function CreatePost() {
           error={errors.description ? true : false}
           helperText={errors.description?.message}
           multiline
-          rows={3}
         />
 
         <TextField
@@ -176,7 +175,15 @@ export default function CreatePost() {
           ref={fileInputRef}
           multiple
         />
-        <Button variant="contained" sx={{ color: "contrast.reverse" }} onClick={handleButtonClick}>
+        <Button
+          variant="contained"
+          sx={{
+            color: "contrast.main",
+            borderRadius: "25px",
+            "&:hover": { color: "contrast.reverse", scale: "1.02" },
+          }}
+          onClick={handleButtonClick}
+        >
           Importer des images
         </Button>
         <Typography sx={{ color: "contrast.reverse" }}>Images : {uploadedImages.length}</Typography>
@@ -192,7 +199,13 @@ export default function CreatePost() {
             type="submit"
             variant="contained"
             fullWidth
-            sx={{ my: "30px", mt: "40px", borderRadius: "20px" }}
+            sx={{
+              my: "30px",
+              mt: "40px",
+              borderRadius: "25px",
+              color: "contrast.main",
+              "&:hover": { color: "contrast.reverse", scale: "1.02" },
+            }}
           >
             {fetching ? "loding..." : "Confirm "}
           </Button>

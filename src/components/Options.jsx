@@ -43,7 +43,26 @@ export default function Options() {
             transform: isHovered ? "rotate(180deg)" : "none",
           },
         }}
-        icon={<SpeedDialIcon openIcon={<KeyboardArrowUpIcon />} icon={<KeyboardArrowDown />} />}
+        icon={
+          <SpeedDialIcon
+            openIcon={
+              <KeyboardArrowUpIcon
+                sx={{
+                  color: "contrast.main",
+                  "&:hover": { scale: "1.02" },
+                }}
+              />
+            }
+            icon={
+              <KeyboardArrowDown
+                sx={{
+                  color: "contrast.main",
+                  "&:hover": { scale: "1.02" },
+                }}
+              />
+            }
+          />
+        }
       >
         {actions.map((action) => (
           <SpeedDialAction

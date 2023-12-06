@@ -16,7 +16,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { contactSchema } from "../schemas/contactSchema"
 import Popup from "../components/Popup"
 import parallax from "../assets/images/parallax.jpg"
-
 export default function Home() {
   const submit = async (data) => {
     await contact(
@@ -36,7 +35,7 @@ export default function Home() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    // sessionStorage.setItem("isLoggedIn", true)
+    sessionStorage.setItem("isLoggedIn", true)
   }, [])
 
   const handleResult = () => {
@@ -114,6 +113,7 @@ export default function Home() {
                   color: "contrast.main",
                   m: "10px 10px 10px 0",
                   fontSize: { xs: "1rem", sm: "1.05rem", md: "1.1rem" },
+                  "&:hover": { color: "contrast.reverse", scale: "1.02" },
                 }}
               >
                 discover opportunities
@@ -124,8 +124,8 @@ export default function Home() {
                   borderRadius: "25px",
                   color: "contrast.main",
                   backgroundColor: "contrast.reverse",
-                  "&:hover": { backgroundColor: "#444" },
                   fontSize: { xs: "1rem", sm: "1.05rem", md: "1.1rem" },
+                  "&:hover": { color: "contrast.reverse", scale: "1.02", backgroundColor: "#444" },
                 }}
                 href="#contact"
               >
@@ -513,6 +513,7 @@ export default function Home() {
               sx={{
                 width: "230px",
                 textShadow: "none",
+                borderRadius: "25px",
                 "&:hover": { color: "contrast.reverse", scale: "1.02" },
                 mb: "40px",
               }}
