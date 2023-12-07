@@ -5,7 +5,7 @@ export const reviewMyPlant = async (image, setFetching, setError, setPayload) =>
     setFetching(true)
     const formData = new FormData()
     formData.append("image", image)
-
+    console.log(image)
     const VITE_AI_URL = import.meta.env.VITE_AI_URL
     const response = await fetch(VITE_AI_URL, {
       method: "POST",

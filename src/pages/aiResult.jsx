@@ -25,6 +25,7 @@ export default function AiResult() {
   const prevent = Aidata?.prevent || ""
   const simage = Aidata?.simage || ""
   const uimage = Aidata?.uimage || ""
+  console.log(uimage)
 
   return (
     <Box

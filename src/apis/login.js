@@ -26,6 +26,8 @@ export const login = async (userEmail, userPassword, setFetching, setError, setP
     console.log(userEmail)
     console.log(userPassword)
     console.log(response)
+
+    sessionStorage.setItem("token", token)
     sessionStorage.setItem("userId", user_id)
     sessionStorage.setItem("firstName", first_name)
     sessionStorage.setItem("lastName", last_name)

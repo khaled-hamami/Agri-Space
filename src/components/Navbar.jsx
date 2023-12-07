@@ -77,18 +77,6 @@ export default function Navbar({ setTheme }) {
       >
         News
       </CustomNavLink>
-      <div
-        style={{ marginRight: "-30px" }}
-        onClick={() => {
-          setTheme((prev) => !prev)
-          localStorage.setItem(
-            "theme",
-            localStorage.getItem("theme") === "light" ? "dark" : "light"
-          )
-        }}
-      >
-        <ThemeSwitcher id="themeSwitcher" title="toogle theme" />
-      </div>
       {sessionStorage.getItem("isLoggedIn") ? (
         <Button
           sx={{
@@ -111,6 +99,18 @@ export default function Navbar({ setTheme }) {
           Login
         </CustomNavLink>
       )}
+      <div
+        style={{ marginRight: "-30px" }}
+        onClick={() => {
+          setTheme((prev) => !prev)
+          localStorage.setItem(
+            "theme",
+            localStorage.getItem("theme") === "light" ? "dark" : "light"
+          )
+        }}
+      >
+        <ThemeSwitcher id="themeSwitcher" title="toogle theme" />
+      </div>
     </AppBar>
   )
 }

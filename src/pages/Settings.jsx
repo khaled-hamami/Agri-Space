@@ -1,13 +1,13 @@
 import { useTheme } from "@emotion/react"
-import styled from "@emotion/styled"
-import { Box, Button, Container, Divider, IconButton, Switch, Typography } from "@mui/material"
+import { Box, Button, Container, Divider, Typography } from "@mui/material"
 import { motion } from "framer-motion"
 import AccountBoxIcon from "@mui/icons-material/AccountBox"
 import DarkModeIcon from "@mui/icons-material/DarkMode"
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed"
+import { useNavigate } from "react-router"
 export default function Settings({ setTheme }) {
   const theme = useTheme()
-
+  const navigate = useNavigate()
   return (
     <motion.div
       animate={{ translateX: 0 }}
@@ -74,19 +74,9 @@ export default function Settings({ setTheme }) {
                 borderColor: "contrast.reverse",
               }}
             />
+          
             <Button
-              endIcon={<AccountBoxIcon />}
-              variant="outlined"
-              fullWidth
-              sx={{
-                color: "contrast.reverse",
-                fontSize: { xs: "1rem", sm: "1.2rem", md: "1.3rem" },
-                textTransform: "lowercase",
-              }}
-            >
-              update profile
-            </Button>
-            <Button
+              onClick={() => navigate("/userPosts")}
               endIcon={<DynamicFeedIcon />}
               variant="outlined"
               fullWidth
@@ -124,4 +114,3 @@ export default function Settings({ setTheme }) {
     </motion.div>
   )
 }
-

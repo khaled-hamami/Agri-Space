@@ -11,6 +11,8 @@ import { useNavigate } from "react-router"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import "../styles/index.css"
+import { getUserPosts } from "../apis/getUserPosts"
+import UserPost from "../components/userPost"
 
 export default function Market() {
   //* animation configuration
@@ -58,19 +60,21 @@ export default function Market() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
   //* load the posts as soon as the page load or the categorie changes
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await getPosts(selectedCategorie, setFetching, setPayload, setError, Error) //* api call
+        await getUserPosts(setFetching, setError, Error).then((data) => {
+          setPayload(data)
+        })
       } catch (err) {
         setError(true)
-        console.log(Error)
       }
     }
 
     fetchData()
-  }, [selectedCategorie]) //* array of dependecies of use Effect objects
+  }, []) //* array of dependecies of use Effect objects
 
   return (
     <Box
@@ -79,6 +83,9 @@ export default function Market() {
         minHeight: "100svh",
         backgroundColor: "contrast.main",
         pt: { xs: "0", sm: "65px", lg: "100px", xl: "110px" },
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <motion.div
@@ -88,92 +95,12 @@ export default function Market() {
       >
         <Box
           sx={{
-            zIndex: 2,
-            mt: { xs: "0", sm: "20px" },
-            justifyContent: "space-between",
-            alignItems: "center",
-            position: "fixed",
-            height: "45px",
-            width: "100%",
-            bgcolor: "primary.main",
-            display: { xs: "flex", md: "none" },
-          }}
-        >
-          <IconButton
-            onClick={() => setMobileListVisible((prev) => !prev)}
-            sx={{ display: { md: "none" } }}
-          >
-            <ListIcon />
-          </IconButton>
-
-          <IconButton
-            size="large"
-            onClick={() =>
-              sessionStorage.getItem("isLoggedIn") ? navigate("/createPost") : navigate("/login")
-            }
-          >
-            <AddIcon />
-          </IconButton>
-        </Box>
-
-        <MobileCategoriesList
-          display={mobileListVisible}
-          setDisplay={setMobileListVisible}
-          setSelectedCategorie={setSelectedCategorie}
-        />
-        <motion.div
-          initial={{ translateX: -100, translateY: -100 }}
-          animate={{ translateX: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ position: "fixed" }}
-        >
-          <List
-            sx={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              height: "100svh",
-              width: "450px",
-              maxWidth: 300,
-              bgcolor: theme.palette.mode == "dark" ? "#444" : "#EEE",
-              color: "contrast.reverse",
-              display: { xs: "none", md: "block" },
-              zIndex: 1,
-              pt: { md: "70px", lg: "80px", xl: "90px" },
-              // borderRight: "1px solid #0AB68B",
-              boxShadow: "10px 0 15px rgba(0, 0, 0, 0.1)",
-            }}
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-          >
-            <CategoriesList setSelectedCategorie={setSelectedCategorie} />
-          </List>
-        </motion.div>
-        <Box
-          sx={{
             pt: { xs: "80px", md: "50px" },
             px: { xs: "20px", sm: "40px" },
-            pl: { md: "320px" },
+            // pl: { md: "320px" },
           }}
+          className="testtttttttttttttt"
         >
-          <Box
-            width="100%"
-            borderRadius="10vw"
-            bgcolor="rgba(10, 182, 139,0.1)"
-            display="flex"
-            justifyContent="center"
-            sx={{ my: "15px" }}
-          >
-            <Typography
-              sx={{
-                fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2rem" },
-                color: "contrast.reverse",
-              }}
-            >
-              {selectedCategorie}
-            </Typography>
-          </Box>
-
           {fetching && (
             <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
               loading...
@@ -193,16 +120,18 @@ export default function Market() {
               <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
                 Error downloading content. {payload?.message}
               </Typography>
-            ) : payload?.posts && payload?.posts.length === 0 ? (
-              <Typography
-                fontSize="1.5rem"
-                sx={{ textAlign: "center", mt: "150px", color: "contrast.reverse" }}
-              >
-                no posts in this categorie
+            )
+             : 
+            payload?.posts && payload?.posts.length === 0 ? (
+              <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
+                You don't have any posts
               </Typography>
-            ) : (
-              payload?.posts.map((post, i) => (
+            )
+             :
+              (
+              payload?.posts?.map((post, i) => (
                 <AnimatedEventBlock index={i} key={i}>
+                  {console.log(post)}
                   <motion.div
                     style={{ marginBlock: "50px" }}
                     initial={{
@@ -213,7 +142,7 @@ export default function Market() {
                     animate={{ opacity: 1, translateY: 0, translateX: 0 }}
                     transition={{ duration: 0.7, delay: i * 0.2 }}
                   >
-                    <Posts post={post} />
+                    <UserPost post={post} />
                   </motion.div>
                 </AnimatedEventBlock>
               ))

@@ -1,24 +1,24 @@
-export const getUserPosts = async (categorie, setFetching, setPayload, setError) => {
-  setFetching(true) //*a state to disable the submit button to prevent multiple requests
+export const getUserPosts = async (setFetching, setError, Error) => {
+  setFetching(true)
   try {
     const VITE_GET_USER_POSTS = import.meta.env.VITE_GET_USER_POSTS
+    console.log(VITE_GET_USER_POSTS)
     const response = await fetch(VITE_GET_USER_POSTS, {
       headers: {
-        "content-type": "application/json",
+        Authorization: `Token ${sessionStorage.getItem("token")}`,
       },
-      method: "POST",
-      body: JSON.stringify({
-        categorie: categorie,
-        userId: sessionStorage.getItem("userId"),
-      }),
     })
-
+    console.log("response   :  " + response)
     if (!response.ok) throw new Error("Error. Please try again later")
-    const data = await response.json()
+    const data = await response.json() //! to change to const insead of let
     if (response.status === 401 || response.status === 400) throw new Error(data.message)
-    if (response.status === 200) setPayload(data.message)
+    if (response.status === 200) {
+      console.log(data)
+      return data
+    }
+
+    console.log(data)
   } catch (err) {
-    console.log(categorie)
     setError(true)
     setPayload(err.message)
   } finally {

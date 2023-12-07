@@ -24,6 +24,7 @@ export default function CreatePost() {
         const imageUrl = reader.result
         uploadedImages.push(imageUrl)
         setUploadedImages([...uploadedImages]) //* Update the state with the new array of uploaded image URLs
+        
       }
 
       reader.readAsDataURL(file)

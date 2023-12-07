@@ -35,7 +35,7 @@ export default function Home() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    sessionStorage.setItem("isLoggedIn", true)
+    // sessionStorage.setItem("isLoggedIn", true)
   }, [])
 
   const handleResult = () => {
@@ -155,7 +155,7 @@ export default function Home() {
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
-                backgroundColor: "primary.light",
+                backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
               }}
             >
@@ -205,7 +205,7 @@ export default function Home() {
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
-                backgroundColor: "primary.light",
+                backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
               }}
             >
@@ -256,7 +256,7 @@ export default function Home() {
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
-                backgroundColor: "primary.light",
+                backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
               }}
             >

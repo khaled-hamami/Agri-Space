@@ -1,3 +1,19 @@
+function dataURLtoFile(dataURL, filename) {
+  // Convert base64 to a Blob
+  const byteString = atob(dataURL.split(",")[1])
+  const ab = new ArrayBuffer(byteString.length)
+  const ia = new Uint8Array(ab)
+
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i)
+  }
+
+  // Create a Blob from the ArrayBuffer
+  const blob = new Blob([ab], { type: "image/jpeg" })
+
+  // Create a File from the Blob
+  return new File([blob], filename, { type: "image/jpeg" })
+}
 export const createPost = async (
   title,
   description,
@@ -13,33 +29,39 @@ export const createPost = async (
   try {
     if (!sessionStorage.getItem("isLoggedIn")) throw new Error("unauthorized")
     // if (!sessionStorage.getItem("userId")) throw new Error("unauthorized")
-  const VITE_CREATE_POSTS = import.meta.env.VITE_CREATE_POSTS
+    const VITE_CREATE_POSTS = import.meta.env.VITE_CREATE_POSTS
+
+    let formData = new FormData()
+    formData.append("user_id", 21) //! to change to session storage !!!
+    formData.append("title", title)
+    formData.append("description", description)
+    formData.append("phone", phone)
+    formData.append("category", categorie)
+    formData.append("price", price)
+
+    for (let i = 0; i < images.length; i++) {
+      const imageDataURL = images[i] // Replace with your actual data URL
+      const filename = `image_${i + 1}.jpeg`
+      const imageFile = dataURLtoFile(imageDataURL, filename)
+      formData.append("images", imageFile)
+    }
     const response = await fetch(VITE_CREATE_POSTS, {
-      headers: {
-        "content-type": "application/json",
-      },
       method: "POST",
-      body: JSON.stringify({
-        title: title,
-        description: description,
-        price: price,
-        phone: phone,
-        categorie: categorie,
-        images: images,
-        user_id: sessionStorage.getItem("userId"),
-      }),
+      headers: {
+        Authorization: `Token ${sessionStorage.getItem("token")}`,
+      },
+      body: formData,
     })
-    
-    console.log(title)
-    console.log(description)
-    console.log(price)
-    console.log(phone)
-    console.log(categorie)
-    console.log(images)
+    console.log(response)
     if (!response.ok) throw new Error("Error. Please try again later")
     const data = await response.json()
-  if (response.status === 401 || response.status === 400) throw new Error(data.message)
-  if (response.status === 200) setPayload(data.message)
+    if (response.status === 401 || response.status === 400) throw new Error(data.message)
+    if (response.status === 201) setPayload(data.message)
+    setTimeout(() => {
+      location.replace("/userPosts")
+    }, 500)
+    console.log(data.message)
+    setError(false)
   } catch (err) {
     setError(true)
     setPayload(err.message)

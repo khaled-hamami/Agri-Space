@@ -8,17 +8,29 @@ import { useState } from "react"
 import { Avatar, Button, IconButton, Rating, Typography } from "@mui/material"
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
+import { deletePost } from "../apis/deletePost"
 import AlertPopup from "./AlertPopup"
 
-export default function Posts({ post }) {
+export default function UserPost({ post }) {
   const [contactInfoHidden, setContactInfoHidden] = useState(false) //? a state to show contact info(not yet used)
   const [hovered, setHovered] = useState(false) //? for animation (not yet used)
   const [ratingValue, setRatingValue] = useState(0)
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const switchImage = (increment) => {
     const newIndex = (currentImageIndex + increment + post.images.length) % post.images.length
     setCurrentImageIndex(newIndex)
   }
+  const id = post.post_id
+  const [fetching, setFetching] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState(false)
+  const handleDelete = async () => {
+    console.log(id)
+    await deletePost(id, setFetching, setError, setMessage, setOpen)
+  }
+
   return (
     <Card
       elevation={5}
@@ -34,21 +46,7 @@ export default function Posts({ post }) {
       onMouseEnter={() => setHovered(true)}
       onMouseOut={() => setHovered(false)}
     >
-      <CardHeader
-        sx={{ margin: 0 }}
-        avatar={<Avatar sx={{ bgcolor: "#0AB68B" }}>{post.user_first_name.charAt(0)}</Avatar>}
-        title={post.user_first_name + " " + post.user_last_name}
-        titleTypographyProps={{
-          fontSize: { xs: ".9rem", md: "1rem" },
-          textShadow: "none",
-          fontWeight: "600",
-        }}
-        subheaderTypographyProps={{
-          fontSize: { xs: ".8rem", md: ".9rem" },
-          textShadow: "none",
-          fontWeight: "600",
-        }}
-      />
+      {Error && <AlertPopup open={open} setOpen={setOpen} message={message} error={error} />}
       <CardMedia
         component="img"
         height="300px"
@@ -103,16 +101,15 @@ export default function Posts({ post }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button variant="contained" sx={{ fontSize: { xs: ".7em", sm: ".9rem" } }}>
-          Show Contact Info
+        <Button
+          fullWidth
+          disabled={fetching}
+          variant="contained"
+          sx={{ fontSize: { xs: ".7em", sm: ".9rem" } }}
+          onClick={handleDelete}
+        >
+          Delete
         </Button>
-        <Rating
-          name="rating"
-          value={ratingValue}
-          onChange={(e, newValue) => {
-            setRatingValue(newValue)
-          }}
-        />
       </CardActions>
     </Card>
   )

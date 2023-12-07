@@ -16,7 +16,12 @@ export default function SignIn({ setValue }) {
   const [open, setOpen] = useState(false)
   const [payload, setPayload] = useState(false)
   const submit = (data) => {
-    login(data.email, data.password, setFetching, setError, setPayload).then(() => setOpen(true))
+    login(data.email, data.password, setFetching, setError, setPayload).then(() => {
+      setTimeout(() => {
+        setOpen(true)
+        location.replace("/")
+      }, 500)
+    })
   }
 
   return (

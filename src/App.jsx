@@ -17,6 +17,7 @@ import Settings from "./pages/Settings"
 import CreatePost from "./pages/CreatePost"
 import { PostsPrivateRouter, LoginPrivateRouter } from "./utils/PrivateRouter"
 import AccessDenied from "./pages/AccessDenied"
+import UserPosts from "./pages/UserPosts"
 const AiResult = React.lazy(() => import("./pages/AiResult"))
 export default function App() {
   //* theme configuration
@@ -60,6 +61,14 @@ export default function App() {
               }
             />
             <Route element={<PostsPrivateRouter />}>
+              <Route
+                path="/userPosts"
+                element={
+                  <React.Suspense fallback={<Loader />}>
+                    <UserPosts />
+                  </React.Suspense>
+                }
+              />
               <Route
                 path="/myplant"
                 element={

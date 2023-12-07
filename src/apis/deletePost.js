@@ -1,27 +1,29 @@
-export const getPosts = async (categorie, setFetching, setPayload, setError, Error) => {
+export const deletePost = async (postId, setFetching, setError, setMessage, setOpen) => {
   setFetching(true) //*a state to disable the submit button to prevent multiple requests
   try {
-    const VITE_GET_POSTS = import.meta.env.VITE_GET_POSTS
-    const url = `${VITE_GET_POSTS}/${categorie}`
-    // "http://localhost:3000/posts"
+    const VITE_DELETE_POST_URL = import.meta.env.VITE_DELETE_POST_URL
+    const url = `${VITE_DELETE_POST_URL}/${postId}`
     const response = await fetch(url, {
       headers: {
         "content-type": "application/json",
+        Authorization: `Token ${sessionStorage.getItem("token")}`,
       },
-      method: "GET",
+      method: "DELETE",
     })
     console.log(response)
     if (!response.ok) throw new Error("Error. Please try again later")
-    let data = await response.json() //! to change to const insead of let
+    const data = await response.json()
     if (response.status === 401 || response.status === 400) throw new Error(data.message)
     if (response.status === 200) {
-      setPayload(data)
       setError(false)
+      setMessage(data.message)
+      location.reload()
+      console.log(data.message)
     }
-    console.log(data)
   } catch (err) {
     setError(true)
-    setPayload(err.message)
+    setOpen(true)
+    setMessage(err.message)
   } finally {
     setFetching(false)
   }
