@@ -65,3 +65,7 @@ Agri Space is a comprehensive platform designed to assist users in various aspec
     "swiper": "^8.0.2",
     "yup": "^1.3.2"
 ##
+
+####################.env : 
+VITE_BACKEND_URL=http://192.168.1.112:8000
+VITE_FORMSPREE_KEY=https://formspree.io/f/xzblovjv
