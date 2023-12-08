@@ -1,6 +1,5 @@
-import { useTheme } from "@emotion/react"
-import { Box } from "@mui/material"
 import PropagateLoader from "react-spinners/PropagateLoader"
+import { Box } from "@mui/material"
 
 export default function Loader() {
   return (

@@ -70,12 +70,12 @@ export default function Navbar({ setTheme }) {
         My Plant
       </CustomNavLink>
       <CustomNavLink
-        to="/news"
+        to="/weather"
         style={({ isActive }) => {
           return { color: isActive ? "#028174" : "" }
         }}
       >
-        News
+        Weather
       </CustomNavLink>
       {sessionStorage.getItem("isLoggedIn") ? (
         <Button

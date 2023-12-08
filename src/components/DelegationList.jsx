@@ -3,7 +3,7 @@ import StatesData from "../assets/data.json"
 import { Autocomplete, Paper, TextField } from "@mui/material"
 
 function DelegationList({ name, registrer, error, helperText }) {
-  //*making the required object for the autocomlete
+  //* making the required object for the autocomlete
   const statesList = []
   const delegationSet = new Set()
   StatesData.data.forEach((value) => {

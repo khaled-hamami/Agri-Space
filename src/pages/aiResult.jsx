@@ -25,8 +25,14 @@ export default function AiResult() {
   const prevent = Aidata?.prevent || ""
   const simage = Aidata?.simage || ""
   const uimage = Aidata?.uimage || ""
-  console.log(uimage)
 
+  const validateImage = () => {
+    if (title === "Error!....Invalid Image,  Please make sure you upload a leaf image") {
+      return true
+    } else {
+      return false
+    }
+  }
   return (
     <Box
       sx={{
@@ -51,74 +57,93 @@ export default function AiResult() {
           <br />
           <br />
         </Container>
-        <fieldset
-          style={{ padding: "30px", borderColor: "#0AB68B", margin: "15px", borderRadius: "15px" }}
-        >
-          <legend>
-            <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
-              Description{" "}
-            </Typography>
-          </legend>
-          <Typography sx={{ color: "contrast.reverse" }}>{description}</Typography>
-        </fieldset>
-        <fieldset
-          style={{ padding: "30px", borderColor: "#0AB68B", margin: "15px", borderRadius: "15px" }}
-        >
-          <legend>
-            <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
-              What is the solution
-            </Typography>
-          </legend>
-          <Typography sx={{ color: "contrast.reverse" }}>{prevent}</Typography>
-        </fieldset>
-        <fieldset
-          style={{ padding: "30px", borderColor: "#0AB68B", margin: "15px", borderRadius: "15px" }}
-        >
-          <legend>
-            <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
-              How to Prevent
-            </Typography>
-          </legend>
-          <Typography sx={{ color: "contrast.reverse" }}>{prevent}</Typography>
-        </fieldset>
-        <Box sx={{ width: "100%", display: "flex" }}>
-          <fieldset
-            style={{
-              padding: "30px",
-              borderColor: "#0AB68B",
-              margin: "15px",
-              borderRadius: "15px",
-              display: "flex",
-              width: "50%",
-              justifyContent: "center",
-            }}
-          >
-            <legend>
-              <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
-                Solution
-              </Typography>
-            </legend>
-            <img src={simage} style={{ width: "50%" }} />
-          </fieldset>
-          <fieldset
-            style={{
-              padding: "30px",
-              borderColor: "#0AB68B",
-              margin: "15px",
-              borderRadius: "15px",
-              display: "flex",
-              width: "50%",
-              justifyContent: "center",
-            }}
-          >
-            <legend>
-              <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>Plante</Typography>
-            </legend>
-            <img src={uimage} style={{ width: "50%" }} />
-          </fieldset>
-        </Box>
-        {/* {(document.getElementById("imageDisplay").src = image)} */}
-        {console.log(document.getElementById("imageDisplay"))}
+        {!validateImage() && (
+          <>
+            <fieldset
+              style={{
+                padding: "30px",
+                borderColor: "#0AB68B",
+                margin: "15px",
+                borderRadius: "15px",
+              }}
+            >
+              <legend>
+                <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
+                  Description{" "}
+                </Typography>
+              </legend>
+              <Typography sx={{ color: "contrast.reverse" }}>{description}</Typography>
+            </fieldset>
+            <fieldset
+              style={{
+                padding: "30px",
+                borderColor: "#0AB68B",
+                margin: "15px",
+                borderRadius: "15px",
+              }}
+            >
+              <legend>
+                <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
+                  What is the solution
+                </Typography>
+              </legend>
+              <Typography sx={{ color: "contrast.reverse" }}>{prevent}</Typography>
+            </fieldset>
+            <fieldset
+              style={{
+                padding: "30px",
+                borderColor: "#0AB68B",
+                margin: "15px",
+                borderRadius: "15px",
+              }}
+            >
+              <legend>
+                <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
+                  How to Prevent
+                </Typography>
+              </legend>
+              <Typography sx={{ color: "contrast.reverse" }}>{prevent}</Typography>
+            </fieldset>
+            <Box sx={{ width: "100%", display: "flex" }}>
+              <fieldset
+                style={{
+                  padding: "30px",
+                  borderColor: "#0AB68B",
+                  margin: "15px",
+                  borderRadius: "15px",
+                  display: "flex",
+                  width: "50%",
+                  justifyContent: "center",
+                }}
+              >
+                <legend>
+                  <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
+                    Solution
+                  </Typography>
+                </legend>
+                <img src={simage} style={{ width: "50%" }} />
+              </fieldset>
+              <fieldset
+                style={{
+                  padding: "30px",
+                  borderColor: "#0AB68B",
+                  margin: "15px",
+                  borderRadius: "15px",
+                  display: "flex",
+                  width: "50%",
+                  justifyContent: "center",
+                }}
+              >
+                <legend>
+                  <Typography sx={{ fontSize: "1.2rem", color: "contrast.reverse" }}>
+                    Plante
+                  </Typography>
+                </legend>
+                <img src={uimage} style={{ width: "50%" }} />
+              </fieldset>
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   )

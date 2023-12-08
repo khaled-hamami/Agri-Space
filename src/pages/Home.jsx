@@ -4,8 +4,12 @@ import homeImage2 from "../assets/images/home-image-4.png"
 import homeBackground1 from "../assets/images/home-background-1.jpg"
 import homeBackground2 from "../assets/images/home-background-2.jpg"
 import homeBackground3 from "../assets/images/home-background-3.webp"
+import homeBackground4 from "../assets/images/home-background-4.jpg"
+import homeBackground5 from "../assets/images/home-background-5.jpg"
 import Footer from "../components/Footer"
 import Slider from "../components/Slider"
+import parallax from "../assets/images/parallax.jpg"
+import Popup from "../components/Popup"
 import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
@@ -14,9 +18,9 @@ import { contact } from "../apis/contact"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { contactSchema } from "../schemas/contactSchema"
-import Popup from "../components/Popup"
-import parallax from "../assets/images/parallax.jpg"
+import logo from "../assets/images/logo.png"
 export default function Home() {
+  //* api call
   const submit = async (data) => {
     await contact(
       data.name,
@@ -35,7 +39,7 @@ export default function Home() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    // sessionStorage.setItem("isLoggedIn", true)
+    sessionStorage.setItem("isLoggedIn", true) //! to delete
   }, [])
 
   const handleResult = () => {
@@ -59,7 +63,7 @@ export default function Home() {
           minHeight: "100svh",
           backgroundAttachment: "fixed",
           backgroundColor: "contrast.main",
-          pt: { xs: "30px", sm: "90px", lg: "100px", xl: "110px" },
+          pt: { xs: "30px" },
           px: { xs: "30px", sm: "60px", md: "80px", lg: "90px", xl: "100px" },
           mb: "50px",
           overflow: "hidden",
@@ -99,7 +103,14 @@ export default function Home() {
               </motion.div>
             </Box>
           </motion.div>
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "center", md: "flex-start" },
+            }}
+          >
             <motion.div
               initial={{ opacity: 0, translateY: -200 }}
               animate={{ opacity: 1, translateY: 0 }}
@@ -111,11 +122,11 @@ export default function Home() {
                 sx={{
                   borderRadius: "25px",
                   color: "contrast.main",
-                  m: "10px 10px 10px 0",
-                  fontSize: { xs: "1rem", sm: "1.05rem", md: "1.1rem" },
+                  m: "10px",
+                  fontSize: { xs: ".9rem", sm: "1.05rem", md: "1.1rem" },
                   "&:hover": { color: "contrast.reverse", scale: "1.02" },
                 }}
-              >
+                >
                 discover opportunities
               </Button>
               <Button
@@ -124,7 +135,8 @@ export default function Home() {
                   borderRadius: "25px",
                   color: "contrast.main",
                   backgroundColor: "contrast.reverse",
-                  fontSize: { xs: "1rem", sm: "1.05rem", md: "1.1rem" },
+                  ml: "10px",
+                  fontSize: { xs: ".9rem", sm: "1.05rem", md: "1.1rem" },
                   "&:hover": { color: "contrast.reverse", scale: "1.02", backgroundColor: "#444" },
                 }}
                 href="#contact"
@@ -132,16 +144,34 @@ export default function Home() {
                 Contact us
               </Button>
             </motion.div>
+            <motion.div
+      initial={{ opacity: 0, scale: 0, rotate: -45 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <div>
+        <img src={logo} alt="" />
+      </div>
+    </motion.div>
           </Box>
 
+          <Typography
+            sx={{
+              fontSize: "3.3rem",
+              color: "contrast.reverse",
+              fontWeight: "bold",
+            }}
+          >
+            Our Services
+          </Typography>
           <Box
             sx={{
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
-              justifyContent: "space-between",
+              justifyContent: "space-evenly",
               alignItems: "center",
               width: "100%",
-              my: { xs: "50px", sm: "70px", md: "150px" },
+              flexWrap: "wrap",
             }}
           >
             <Paper
@@ -284,7 +314,7 @@ export default function Home() {
                   fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
                 }}
               >
-                Vehicles
+                Agricultural equipment
               </Typography>
               <Typography
                 sx={{
@@ -294,8 +324,113 @@ export default function Home() {
                 }}
               >
                 Explore our agricultural e-commerce platform to buy, sell and resell effortlessly.
-                of this category of vehicles to provide the latest invention in the agricultural
-                world
+                of this category of vehicles and equipments to provide the latest invention in the
+                agricultural world
+              </Typography>
+            </Paper>
+            <Paper
+              elevation={20}
+              sx={{
+                mx: "20px",
+                width: { xs: "80%", md: "45%", lg: "30%" },
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
+                my: "30px",
+                pb: "10px",
+                backgroundColor: "primary.main",
+                boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  height: "90%",
+                  backgroundImage: `url(${homeBackground4})`,
+                  filter: "blur(2px)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  WebkitMaskImage: "linear-gradient(to Top, transparent 0%,  #00ff00 70%)",
+                  backdropFilter: "blur(5px)",
+                  p: "0 15px 15px 15px",
+                }}
+              />
+              <Typography
+                sx={{
+                  zIndex: "405",
+                  px: "10px",
+                  color: "#fff",
+                  fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
+                }}
+              >
+                Crop protection
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#000",
+                  px: "10px",
+                  fontSize: { xs: ".7rem", sm: ".95rem", md: "1.1rem" },
+                }}
+              >
+                look through the list of crops protection to find what best suits you. You can also
+                scan your plant and get suggestions
+              </Typography>
+            </Paper>
+            <Paper
+              elevation={20}
+              sx={{
+                mx: "20px",
+                width: { xs: "80%", md: "45%", lg: "30%" },
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
+                my: "30px",
+                pb: "10px",
+                backgroundColor: "primary.main",
+                boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  height: "90%",
+                  backgroundImage: `url(${homeBackground5})`,
+                  filter: "blur(2px)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  WebkitMaskImage: "linear-gradient(to Top, transparent 0%,  #00ff00 70%)",
+                  backdropFilter: "blur(5px)",
+                  p: "0 15px 15px 15px",
+                }}
+              />
+              <Typography
+                sx={{
+                  zIndex: "405",
+                  px: "10px",
+                  color: "#fff",
+                  fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
+                }}
+              >
+                Agricultural technology
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#000",
+                  px: "10px",
+                  fontSize: { xs: ".7rem", sm: ".95rem", md: "1.1rem" },
+                }}
+                f
+              >
+                Find out the latest and greatest new technologies for sale, and get your hands on
+                them
               </Typography>
             </Paper>
           </Box>
@@ -308,7 +443,6 @@ export default function Home() {
               display: "flex",
               flexDirection: { xs: "column-reverse", md: "row" },
               justifyContent: "space-between",
-              // backgroundColor: "rgba(255,0,0,.5)",
             }}
           >
             <Box
@@ -351,7 +485,7 @@ export default function Home() {
             sx={{
               width: "100%",
               height: "600px",
-              my: "50px",
+              my: "10px",
               mb: "300px",
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
@@ -422,7 +556,7 @@ export default function Home() {
         style={{
           width: "95%",
           objectPosition: "center",
-          margin: "200px auto 100px  auto ",
+          margin: "50x auto 100px  auto ",
           borderColor: "#0AB68B",
           borderRadius: "20px",
         }}

@@ -11,12 +11,14 @@ import {
   Instagram,
   KeyboardArrowDown,
   SettingsOutlined,
+  Twitter,
 } from "@mui/icons-material"
 
 const actions = [
   { icon: <SettingsOutlined />, name: "Settings", link: "/settings", type: "internal" },
   { icon: <FacebookOutlined />, name: "Facebook", link: "#", type: "external" },
   { icon: <Instagram />, name: "Instagram", link: "#", type: "external" },
+  { icon: <Twitter />, name: "Twitter", link: "#", type: "external" },
 ]
 
 export default function Options() {

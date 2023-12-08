@@ -78,7 +78,7 @@ export default function App() {
                 }
               />
               <Route
-                path="/news"
+                path="/weather"
                 element={
                   <React.Suspense fallback={<Loader />}>
                     <News />

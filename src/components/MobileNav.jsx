@@ -82,13 +82,13 @@ export default function MobileNav({ setTheme }) {
           sx={{
             px: window.innerWidth < 400 ? "0px" : "12",
           }}
-          onClick={() => navigate("/news")}
-          label="News"
+          onClick={() => navigate("/weather")}
+          label="Weather"
           icon={
             <NewspaperIcon
               fontSize="medium"
               sx={{
-                color: location.pathname === "/news" ? "primary.main" : "",
+                color: location.pathname === "/weather" ? "primary.main" : "",
               }}
             />
           }

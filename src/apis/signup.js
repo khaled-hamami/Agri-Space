@@ -5,13 +5,12 @@ export const signup = async (
   email,
   password,
   setFetching,
-  setError,
   setPayload
 ) => {
   setFetching(true) //*a state to disable the submit button to prevent multiple requests
   try {
-    const VITE_SIGNUP_URL = import.meta.env.VITE_SIGNUP_URL
-    const response = await fetch(VITE_SIGNUP_URL, {
+    const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+    const response = await fetch(`${VITE_BACKEND_URL}/auth/register`, {
       headers: {
         "content-type": "application/json",
       },
@@ -25,19 +24,18 @@ export const signup = async (
       }),
     })
 
-    if (!response.ok) throw new Error("Error. Please try again later")
-    console.log(response.ok)
+    //* handle success and errros
+
+    if (!response) throw new Error(response.message)
     const data = await response.json()
-    console.log(data)
     if (response.status === 401 || response.status === 400) throw new Error(data.message)
     if (response.status === 201) {
       setPayload(data.message)
-      setError(false)
     }
+    return true
   } catch (err) {
-    console.log(err)
-    setError(true)
-    setPayload(err.message)
+    setPayload(err.message == "Failed to fetch" ? "Error, please try again later" : err.message)
+    return false
   } finally {
     setFetching(false)
   }

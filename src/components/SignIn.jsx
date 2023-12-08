@@ -1,26 +1,29 @@
+import AlertPopup from "./AlertPopup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router"
 import { signinSchema } from "../schemas/SigninSchema"
 import { useState } from "react"
 import { login } from "../apis/login"
-import AlertPopup from "./AlertPopup"
 export default function SignIn({ setValue }) {
   //* handle form validation
   const form = useForm({ resolver: yupResolver(signinSchema) })
   const { register, handleSubmit, formState } = form
   const { errors } = formState
   const [fetching, setFetching] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(true) //*incase of error
   const [open, setOpen] = useState(false)
   const [payload, setPayload] = useState(false)
-  const submit = (data) => {
-    login(data.email, data.password, setFetching, setError, setPayload).then(() => {
-      setTimeout(() => {
-        setOpen(true)
-        location.replace("/")
-      }, 500)
+  //* api call
+  const submit = async (data) => {
+    await login(data.email, data.password, setFetching, setPayload, error).then((response) => {
+      setOpen(true)
+      setError(!response)
+      if (response) {
+        setTimeout(() => {
+          location.replace("/")
+        }, 1500)
+      }
     })
   }
 

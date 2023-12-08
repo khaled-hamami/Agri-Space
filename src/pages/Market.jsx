@@ -11,6 +11,7 @@ import { useNavigate } from "react-router"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import "../styles/index.css"
+import CardSkeleton from "../skeletons/CardSkeleton"
 
 export default function Market() {
   //* animation configuration
@@ -65,7 +66,6 @@ export default function Market() {
         await getPosts(selectedCategorie, setFetching, setPayload, setError, Error) //* api call
       } catch (err) {
         setError(true)
-        console.log(Error)
       }
     }
 
@@ -175,9 +175,8 @@ export default function Market() {
           </Box>
 
           {fetching && (
-            <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
-              loading...
-            </Typography>
+            <CardSkeleton mappedOverArray={new Array(5).fill().map((_, index) => index * 2 + 1)} />
+
           )}
           <Box
             ref={ref}
@@ -191,7 +190,7 @@ export default function Market() {
           >
             {Error ? (
               <Typography fontSize="1.5rem" sx={{ color: "contrast.reverse" }}>
-                Error downloading content. {payload?.message}
+                Oops! Download failed. Retry. {payload?.message}
               </Typography>
             ) : payload?.posts && payload?.posts.length === 0 ? (
               <Typography

@@ -1,11 +1,11 @@
 import { Box, Button, TextField, Typography } from "@mui/material"
 import DelegationList from "./DelegationList"
+import AlertPopup from "./AlertPopup"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { signupSchema } from "../schemas/SignupSchema"
 import { signup } from "../apis/signup"
-import AlertPopup from "./AlertPopup"
 
 export default function SignUp({ setValue }) {
   //* handle form validation
@@ -13,9 +13,10 @@ export default function SignUp({ setValue }) {
   const { register, handleSubmit, formState } = form
   const { errors } = formState
   const [fetching, setFetching] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(null)
   const [error, setError] = useState(false)
   const [payLoad, setPayload] = useState(null)
+  //* api call
   const submit = (data) => {
     signup(
       data.firstName,
@@ -24,18 +25,18 @@ export default function SignUp({ setValue }) {
       data.email,
       data.password,
       setFetching,
-      setError,
       setPayload
-    ).then(() => {
+    ).then((response) => {
       setOpen(true)
-      console.log(error)
-      if (!error) {
+      setError(!response)
+      if (response) {
         setTimeout(() => {
           setValue(0)
-        }, 1000)
+        }, 1500)
       }
     })
   }
+
   return (
     <div
       style={{

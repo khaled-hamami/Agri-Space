@@ -1,6 +1,5 @@
 export const contact = async (name, email, subject, message, setFetching, setError, setSuccess) => {
   const formData = new FormData()
-
   formData.append("name", name)
   formData.append("email", email)
   formData.append("subject", subject)
@@ -8,8 +7,7 @@ export const contact = async (name, email, subject, message, setFetching, setErr
 
   const formSpreeApiKey = import.meta.env.VITE_FORMSPREE_KEY
 
-  // Set the fetching state to true to disable the submit button
-  setFetching(true)
+  setFetching(true) // *Set the fetching state to true to disable the submit button
 
   try {
     const response = await fetch(formSpreeApiKey, {
@@ -26,15 +24,12 @@ export const contact = async (name, email, subject, message, setFetching, setErr
       )
     }
 
-    const result = await response.json()
     setSuccess(
       "Thank you! Your request was submitted successfully. We will try to respond as soon as possible."
     )
   } catch (err) {
-    // Handle and display the error
     setError(err.message)
   } finally {
-    // Ensure that setFetching is set to false regardless of success or failure
     setFetching(false)
   }
 }

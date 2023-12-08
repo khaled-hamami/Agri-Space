@@ -29,10 +29,10 @@ export const createPost = async (
   try {
     if (!sessionStorage.getItem("isLoggedIn")) throw new Error("unauthorized")
     // if (!sessionStorage.getItem("userId")) throw new Error("unauthorized")
-    const VITE_CREATE_POSTS = import.meta.env.VITE_CREATE_POSTS
+    const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
     let formData = new FormData()
-    formData.append("user_id", 21) //! to change to session storage !!!
+    formData.append("user_id", sessionStorage.getItem("userId")) //! to change to session storage !!!
     formData.append("title", title)
     formData.append("description", description)
     formData.append("phone", phone)
@@ -45,14 +45,13 @@ export const createPost = async (
       const imageFile = dataURLtoFile(imageDataURL, filename)
       formData.append("images", imageFile)
     }
-    const response = await fetch(VITE_CREATE_POSTS, {
+    const response = await fetch(`${VITE_BACKEND_URL}/posts/addPost`, {
       method: "POST",
       headers: {
         Authorization: `Token ${sessionStorage.getItem("token")}`,
       },
       body: formData,
     })
-    console.log(response)
     if (!response.ok) throw new Error("Error. Please try again later")
     const data = await response.json()
     if (response.status === 401 || response.status === 400) throw new Error(data.message)
@@ -60,11 +59,10 @@ export const createPost = async (
     setTimeout(() => {
       location.replace("/userPosts")
     }, 500)
-    console.log(data.message)
     setError(false)
   } catch (err) {
     setError(true)
-    setPayload(err.message)
+    setPayload(err.message == "Failed to fetch" ? "Error, please try again later" : err.message)
   } finally {
     setFetching(false)
   }

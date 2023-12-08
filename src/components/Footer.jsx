@@ -1,4 +1,7 @@
 import "../styles/footer.css"
+import { IconButton } from "@mui/material"
+import { Facebook, Instagram, Twitter } from "@mui/icons-material"
+
 export default function Footer() {
   return (
     <>
@@ -6,56 +9,41 @@ export default function Footer() {
         <div className="container">
           <div className="row">
             <div className="footer-col">
-              <h4>company</h4>
+              <h4>Quick links</h4>
               <ul>
                 <li>
-                  <a href="#">about us</a>
+                  <a href="/market">Market</a>
                 </li>
                 <li>
-                  <a href="#">our services</a>
+                  <a href="/myplant">My plant</a>
                 </li>
                 <li>
-                  <a href="#">privacy policy</a>
+                  <a href="/weather">Weather</a>
                 </li>
                 <li>
-                  <a href="#">affiliate program</a>
+                  <a href="login">Login</a>
                 </li>
               </ul>
             </div>
             <div className="footer-col">
-              <h4>get help</h4>
+              <h4>Settings</h4>
               <ul>
                 <li>
-                  <a href="#">FAQ</a>
+                  <a href="/settings">General</a>
                 </li>
                 <li>
-                  <a href="#">shipping</a>
-                </li>
-                <li>
-                  <a href="#">returns</a>
-                </li>
-                <li>
-                  <a href="#">order status</a>
-                </li>
-                <li>
-                  <a href="#">payment options</a>
+                  <a href="userPosts">My Posts</a>
                 </li>
               </ul>
             </div>
             <div className="footer-col">
-              <h4>online shop</h4>
+              <h4>products</h4>
               <ul>
                 <li>
-                  <a href="#">watch</a>
+                  <a href="/market">Shop products</a>
                 </li>
                 <li>
-                  <a href="#">bag</a>
-                </li>
-                <li>
-                  <a href="#">shoes</a>
-                </li>
-                <li>
-                  <a href="#">dress</a>
+                  <a href="/userPosts">view my listenings</a>
                 </li>
               </ul>
             </div>
@@ -63,16 +51,19 @@ export default function Footer() {
               <h4>follow us</h4>
               <div className="social-links">
                 <a href="#">
-                  <i className="fab fa-facebook-f"></i>
+                  <IconButton>
+                    <Facebook />
+                  </IconButton>
                 </a>
                 <a href="#">
-                  <i className="fab fa-twitter"></i>
+                  <IconButton>
+                    <Instagram />
+                  </IconButton>
                 </a>
                 <a href="#">
-                  <i className="fab fa-instagram"></i>
-                </a>
-                <a href="#">
-                  <i className="fab fa-linkedin-in"></i>
+                  <IconButton>
+                    <Twitter />
+                  </IconButton>
                 </a>
               </div>
             </div>

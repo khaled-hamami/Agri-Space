@@ -26,8 +26,8 @@ export default function UserPost({ post }) {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState(false)
   const [message, setMessage] = useState(false)
+  //* api call
   const handleDelete = async () => {
-    console.log(id)
     await deletePost(id, setFetching, setError, setMessage, setOpen)
   }
 

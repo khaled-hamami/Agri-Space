@@ -5,7 +5,7 @@ import draganddrop from "../assets/images/draganddrop.png"
 import draganddropdark from "../assets/images/draganddropdark.png"
 import AlertPopup from "../components/AlertPopup"
 import { Box, Button, IconButton, Typography, hexToRgb } from "@mui/material"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { useTheme } from "@emotion/react"
 import { reviewMyPlant } from "../apis/reviewMyPlant"
@@ -13,6 +13,7 @@ import { Cancel } from "@mui/icons-material"
 import { useNavigate } from "react-router"
 import { atom, useAtom } from "jotai"
 import { motion } from "framer-motion"
+import FileUploadIcon from "@mui/icons-material/FileUpload"
 
 export const data = atom()
 export default function MyPlant() {
@@ -26,6 +27,10 @@ export default function MyPlant() {
   const [invalidConfirmMessage, setInavlidCofirmMessage] = useState("") //* to open the alert incase of error or success
 
   const theme = useTheme()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const [files, setFiles] = useState([]) //*the file uploaded to the handler
   const [image, setImage] = useState([]) //* state with the correct convernted image format
@@ -393,6 +398,7 @@ export default function MyPlant() {
                 }}
               >
                 <Button
+                  endIcon={<FileUploadIcon />}
                   variant="outlined"
                   fullWidth
                   sx={{ backgroundColor: "rgba(0,0,0,.05)", color: "contrast.reverse" }}
