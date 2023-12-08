@@ -1,17 +1,15 @@
-import { styled } from "@mui/material/styles"
 import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
 import CardMedia from "@mui/material/CardMedia"
 import CardContent from "@mui/material/CardContent"
 import CardActions from "@mui/material/CardActions"
 import { useState } from "react"
-import { Avatar, Button, IconButton, Rating, Typography } from "@mui/material"
+import { Avatar, Backdrop, Button, IconButton, Paper, Rating, Typography } from "@mui/material"
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
-import AlertPopup from "./AlertPopup"
-
+import ContentCopyIcon from "@mui/icons-material/ContentCopy"
+import copyToClipboard from "../utils/CopyToClipboard"
 export default function Posts({ post }) {
-  const [contactInfoHidden, setContactInfoHidden] = useState(false) //? a state to show contact info(not yet used)
   const [hovered, setHovered] = useState(false) //? for animation (not yet used)
   const [ratingValue, setRatingValue] = useState(0)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -19,6 +17,7 @@ export default function Posts({ post }) {
     const newIndex = (currentImageIndex + increment + post.images.length) % post.images.length
     setCurrentImageIndex(newIndex)
   }
+  const [open, setOpen] = useState(false)
   return (
     <Card
       elevation={5}
@@ -52,7 +51,7 @@ export default function Posts({ post }) {
       <CardMedia
         component="img"
         height="300px"
-        src={"http://192.168.196.224:8000" + post.images[currentImageIndex].image_url}
+        src={"http://192.168.1.112:8000" + post.images[currentImageIndex].image_url}
         alt={post.title}
       />
       {post.images.length > 1 && (
@@ -101,11 +100,58 @@ export default function Posts({ post }) {
         <Typography sx={{ fontSize: { xs: ".8rem", sm: ".85em", md: ".95rem", lg: "1.15rem" } }}>
           {post.description}
         </Typography>
+        <Typography sx={{ fontSize: { xs: ".8rem", sm: ".85em", md: ".95rem", lg: "1.15rem" } }}>
+          price : {post.price}
+        </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button variant="contained" sx={{ fontSize: { xs: ".7em", sm: ".9rem" } }}>
+        <Button
+          variant="contained"
+          sx={{ fontSize: { xs: ".7em", sm: ".9rem" } }}
+          onClick={() => setOpen(true)}
+        >
           Show Contact Info
         </Button>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          onClick={() => setOpen(false)}
+        >
+          <Paper
+            elevation={20}
+            sx={{
+              borderRadius: "15px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              width: "50%",
+              height: "30%",
+              gap: "30px",
+              backgroundColor: "primary.dark",
+            }}
+          >
+            <Typography>
+              {post.user_first_name} {post.user_last_name}
+            </Typography>
+            <Typography>{post.title}</Typography>
+
+            <Button
+              onClick={copyToClipboard(post.phone)}
+              endIcon={<ContentCopyIcon />}
+              variant="contained"
+              sx={{
+                backgroundColor: "primary.dark",
+                color: "#fff",
+                "&:hover": {
+                  scale: "1.05",
+                },
+              }}
+            >
+              {post.phone}
+            </Button>
+          </Paper>
+        </Backdrop>
         <Rating
           name="rating"
           value={ratingValue}

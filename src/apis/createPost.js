@@ -45,6 +45,9 @@ export const createPost = async (
       const imageFile = dataURLtoFile(imageDataURL, filename)
       formData.append("images", imageFile)
     }
+
+    console.log(sessionStorage.getItem("token"))
+    console.log(`${VITE_BACKEND_URL}/posts/addPost`)
     const response = await fetch(`${VITE_BACKEND_URL}/posts/addPost`, {
       method: "POST",
       headers: {
@@ -52,6 +55,7 @@ export const createPost = async (
       },
       body: formData,
     })
+    console.log(response)
     if (!response.ok) throw new Error("Error. Please try again later")
     const data = await response.json()
     if (response.status === 401 || response.status === 400) throw new Error(data.message)

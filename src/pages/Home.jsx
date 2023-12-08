@@ -10,15 +10,17 @@ import Footer from "../components/Footer"
 import Slider from "../components/Slider"
 import parallax from "../assets/images/parallax.jpg"
 import Popup from "../components/Popup"
+import logo from "../assets/images/logo.png"
 import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material"
-import { motion } from "framer-motion"
+import { motion, useAnimation } from "framer-motion"
+import { useInView } from "react-intersection-observer"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { contact } from "../apis/contact"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { contactSchema } from "../schemas/contactSchema"
-import logo from "../assets/images/logo.png"
+
 export default function Home() {
   //* api call
   const submit = async (data) => {
@@ -39,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    sessionStorage.setItem("isLoggedIn", true) //! to delete
+    // sessionStorage.setItem("isLoggedIn", true) //! to delete
   }, [])
 
   const handleResult = () => {
@@ -48,6 +50,41 @@ export default function Home() {
     )
   }
   const navigate = useNavigate()
+
+  //* animate on scroll configuration
+
+  const [ref1, inView1] = useInView({
+    triggerOnce: false,
+  })
+
+  const [ref2, inView2] = useInView({
+    triggerOnce: false,
+  })
+
+  const [ref3, inView3] = useInView({
+    triggerOnce: false,
+  })
+
+  const [ref4, inView4] = useInView({
+    triggerOnce: false,
+  })
+
+  const [ref5, inView5] = useInView({
+    triggerOnce: false,
+  })
+  const [ref6, inView6] = useInView({
+    triggerOnce: false,
+  })
+  const [ref7, inView7] = useInView({
+    triggerOnce: false,
+  })
+  const [ref8, inView8] = useInView({
+    triggerOnce: false,
+  })
+  const [ref9, inView9] = useInView({
+    triggerOnce: false,
+  })
+
   //* contact form configuration
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
@@ -55,6 +92,7 @@ export default function Home() {
   const form = useForm({ resolver: yupResolver(contactSchema) })
   const { register, handleSubmit, formState } = form
   const { errors } = formState
+
   return (
     <>
       <Box
@@ -126,7 +164,7 @@ export default function Home() {
                   fontSize: { xs: ".9rem", sm: "1.05rem", md: "1.1rem" },
                   "&:hover": { color: "contrast.reverse", scale: "1.02" },
                 }}
-                >
+              >
                 discover opportunities
               </Button>
               <Button
@@ -145,14 +183,14 @@ export default function Home() {
               </Button>
             </motion.div>
             <motion.div
-      initial={{ opacity: 0, scale: 0, rotate: -45 }}
-      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div>
-        <img src={logo} alt="" />
-      </div>
-    </motion.div>
+              initial={{ opacity: 0, scale: 0, rotate: -45 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div>
+                <img src={logo} alt="" />
+              </div>
+            </motion.div>
           </Box>
 
           <Typography
@@ -176,17 +214,26 @@ export default function Home() {
           >
             <Paper
               elevation={20}
+              ref={ref1}
               sx={{
                 mx: "20px",
                 width: { xs: "80%", md: "45%", lg: "30%" },
                 display: "flex",
-                alignItems: "center",
                 flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "center",
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
                 backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+                position: "relative",
+                opacity: inView1 ? 1 : 0,
+                transform: inView1
+                  ? "scale(1) rotate(0) translate(0)"
+                  : "scale(0.8) rotate(-15deg) translateY(20px)",
+                transformOrigin: "center bottom",
+                transition: "opacity 0.8s, transform 0.8s",
               }}
             >
               <Box
@@ -226,17 +273,26 @@ export default function Home() {
             </Paper>
             <Paper
               elevation={20}
+              ref={ref2}
               sx={{
                 mx: "20px",
                 width: { xs: "80%", md: "45%", lg: "30%" },
                 display: "flex",
-                alignItems: "center",
                 flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "center",
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
                 backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+                position: "relative",
+                opacity: inView2 ? 1 : 0,
+                transform: inView2
+                  ? "scale(1) rotate(0) translate(0)"
+                  : "scale(0.8) rotate(-15deg) translateY(20px)",
+                transformOrigin: "center bottom",
+                transition: "opacity 0.8s, transform 0.8s",
               }}
             >
               <Box
@@ -277,17 +333,26 @@ export default function Home() {
             </Paper>
             <Paper
               elevation={20}
+              ref={ref3}
               sx={{
                 mx: "20px",
                 width: { xs: "80%", md: "45%", lg: "30%" },
                 display: "flex",
-                alignItems: "center",
                 flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "center",
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
                 backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+                position: "relative",
+                opacity: inView3 ? 1 : 0,
+                transform: inView3
+                  ? "scale(1) rotate(0) translate(0)"
+                  : "scale(0.8) rotate(-15deg) translateY(20px)",
+                transformOrigin: "center bottom",
+                transition: "opacity 0.8s, transform 0.8s",
               }}
             >
               <Box
@@ -330,17 +395,26 @@ export default function Home() {
             </Paper>
             <Paper
               elevation={20}
+              ref={ref4}
               sx={{
                 mx: "20px",
                 width: { xs: "80%", md: "45%", lg: "30%" },
                 display: "flex",
-                alignItems: "center",
                 flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "center",
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
                 backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+                position: "relative",
+                opacity: inView4 ? 1 : 0,
+                transform: inView4
+                  ? "scale(1) rotate(0) translate(0)"
+                  : "scale(0.8) rotate(-15deg) translateY(20px)",
+                transformOrigin: "center bottom",
+                transition: "opacity 0.8s, transform 0.8s",
               }}
             >
               <Box
@@ -382,17 +456,26 @@ export default function Home() {
             </Paper>
             <Paper
               elevation={20}
+              ref={ref5}
               sx={{
                 mx: "20px",
                 width: { xs: "80%", md: "45%", lg: "30%" },
                 display: "flex",
-                alignItems: "center",
                 flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "center",
                 height: { xs: "300px", sm: "400px", md: "500px", lg: "600px" },
                 my: "30px",
                 pb: "10px",
                 backgroundColor: "primary.main",
                 boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
+                position: "relative",
+                opacity: inView5 ? 1 : 0,
+                transform: inView5
+                  ? "scale(1) rotate(0) translate(0)"
+                  : "scale(0.8) rotate(-15deg) translateY(20px)",
+                transformOrigin: "center bottom",
+                transition: "opacity 0.8s, transform 0.8s",
               }}
             >
               <Box
@@ -453,22 +536,30 @@ export default function Home() {
                 justifyContent: "center",
               }}
             >
-              <Typography sx={{ fontSize: "2.3rem", color: "primary.main", pb: "15px" }}>
-                Why choose us
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "3.3rem",
-                  color: "contrast.reverse",
-                  fontWeight: "bold",
-                  pb: "15px",
-                }}
+              <motion.div
+                ref={ref6}
+                initial={{ opacity: 0, translateX: -200 }}
+                transition={{ duration: 0.8 }}
+                style={{ opacity: 0, translateX: -200 }}
+                animate={inView6 ? { opacity: 1, translateX: 0 } : {}}
               >
-                Personalized purchasing and sales service{" "}
-              </Typography>
-              <Typography sx={{ fontSize: "1.5rem", color: "contrast.reverse" }}>
-                Buying and selling service with categorized selection for your convenience{" "}
-              </Typography>
+                <Typography sx={{ fontSize: "2.3rem", color: "primary.main", pb: "15px" }}>
+                  Why choose us
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "3.3rem",
+                    color: "contrast.reverse",
+                    fontWeight: "bold",
+                    pb: "15px",
+                  }}
+                >
+                  Personalized purchasing and sales service{" "}
+                </Typography>
+                <Typography sx={{ fontSize: "1.5rem", color: "contrast.reverse" }}>
+                  Buying and selling service with categorized selection for your convenience{" "}
+                </Typography>
+              </motion.div>
             </Box>
             <Box
               sx={{
@@ -510,22 +601,30 @@ export default function Home() {
                 justifyContent: "center",
               }}
             >
-              <Typography sx={{ fontSize: "2.3rem", color: "primary.main", pb: "15px" }}>
-                who are you
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "3.3rem",
-                  color: "contrast.reverse",
-                  fontWeight: "bold",
-                  pb: "15px",
-                }}
+              <motion.div
+                ref={ref7}
+                initial={{ opacity: 0, translateX: 200 }}
+                transition={{ duration: 0.8 }}
+                style={{ opacity: 0, translateX: 200 }}
+                animate={inView7 ? { opacity: 1, translateX: 0 } : {}}
               >
-                flexible use
-              </Typography>
-              <Typography sx={{ fontSize: "1.5rem", color: "contrast.reverse" }}>
-                our service can be used by farmers, personal use or companies
-              </Typography>
+                <Typography sx={{ fontSize: "2.3rem", color: "primary.main", pb: "15px" }}>
+                  who are you
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "3.3rem",
+                    color: "contrast.reverse",
+                    fontWeight: "bold",
+                    pb: "15px",
+                  }}
+                >
+                  flexible use
+                </Typography>
+                <Typography sx={{ fontSize: "1.5rem", color: "contrast.reverse" }}>
+                  our service can be used by farmers, personal use or companies
+                </Typography>
+              </motion.div>
             </Box>
           </Box>
         </Box>
@@ -546,7 +645,7 @@ export default function Home() {
         <Box
           sx={{
             width: "100%",
-            backgroundColor: "rgba(0,0,0,0.7)",
+            backgroundColor: "rgba(0,0,0,0.5)",
             height: { xs: "200px", sm: "300px", md: "400px", lg: "500px", xl: "600px" },
           }}
         />
@@ -554,11 +653,14 @@ export default function Home() {
       <fieldset
         id="contact"
         style={{
+          marginTop: "120px",
+          marginBottom: "120px",
           width: "95%",
           objectPosition: "center",
           margin: "50x auto 100px  auto ",
           borderColor: "#0AB68B",
           borderRadius: "20px",
+          margin: "auto",
         }}
       >
         <legend style={{ marginLeft: "30px" }}>
@@ -658,8 +760,15 @@ export default function Home() {
           </form>
         </Container>
       </fieldset>
-
-      <Footer />
+      <motion.div
+        ref={ref9}
+        initial={{ opacity: 0, translateY: 200 }}
+        transition={{ duration: 0.8 }}
+        style={{ opacity: 0, translateY: 200, marginTop: "20px" }}
+        animate={inView9 ? { opacity: 1, translateY: 0 } : {}}
+      >
+        <Footer />
+      </motion.div>
     </>
   )
 }
