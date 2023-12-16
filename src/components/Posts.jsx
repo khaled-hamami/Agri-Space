@@ -51,7 +51,7 @@ export default function Posts({ post }) {
       <CardMedia
         component="img"
         height="300px"
-        src={"http://192.168.1.112:8000" + post.images[currentImageIndex].image_url}
+        src={"http://192.168.196.224:8000" + post.images[currentImageIndex].image_url}
         alt={post.title}
       />
       {post.images.length > 1 && (
